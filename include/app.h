@@ -49,7 +49,7 @@ static remixapi_LightInfo g_remix_lightInfo;
 
 static bool g_remix_sphereLightDirection = 1;
 
-inline remixapi_HardcodedVertex makeVertex(float x, float y, float z)
+constexpr remixapi_HardcodedVertex makeVertex(float x, float y, float z)
 {
   remixapi_HardcodedVertex v = {
     { x, y, z },
