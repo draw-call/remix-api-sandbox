@@ -1,0 +1,16 @@
+Win32/
+x64/
+.vs/
+
+include/remix
+include/remixapi
+
+src/*.obj
+vc*.pdb
+
+game/*
+game/.trex/*
+!game/models
+!game/rtx.conf
+!game/.trex
+!game/.trex/bridge.conf
