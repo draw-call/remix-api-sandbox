@@ -16,8 +16,8 @@ class  CD3D9Enumeration;
 //--------------------------------------------------------------------------------------
 struct CD3D9EnumDSMSConflict
 {
-    D3DFORMAT DSFormat;
-    D3DMULTISAMPLE_TYPE MSType;
+  D3DFORMAT           DSFormat;
+  D3DMULTISAMPLE_TYPE MSType;
 };
 
 //--------------------------------------------------------------------------------------
@@ -27,20 +27,20 @@ struct CD3D9EnumDSMSConflict
 //--------------------------------------------------------------------------------------
 struct CD3D9EnumDeviceSettingsCombo
 {
-    UINT AdapterOrdinal;
-    D3DDEVTYPE DeviceType;
-    D3DFORMAT AdapterFormat;
-    D3DFORMAT BackBufferFormat;
-    BOOL Windowed;
+  UINT       AdapterOrdinal;
+  D3DDEVTYPE DeviceType;
+  D3DFORMAT  AdapterFormat;
+  D3DFORMAT  BackBufferFormat;
+  BOOL       Windowed;
 
-    CGrowableArray <D3DFORMAT> depthStencilFormatList; // List of D3DFORMATs
-    CGrowableArray <D3DMULTISAMPLE_TYPE> multiSampleTypeList; // List of D3DMULTISAMPLE_TYPEs
-    CGrowableArray <DWORD> multiSampleQualityList; // List of number of quality levels for each multisample type
-    CGrowableArray <UINT> presentIntervalList; // List of D3DPRESENT flags
-    CGrowableArray <CD3D9EnumDSMSConflict> DSMSConflictList; // List of CD3D9EnumDSMSConflict
+  CGrowableArray <D3DFORMAT>             depthStencilFormatList; // List of D3DFORMATs
+  CGrowableArray <D3DMULTISAMPLE_TYPE>   multiSampleTypeList;    // List of D3DMULTISAMPLE_TYPEs
+  CGrowableArray <DWORD>                 multiSampleQualityList; // List of number of quality levels for each multisample type
+  CGrowableArray <UINT>                  presentIntervalList;    // List of D3DPRESENT flags
+  CGrowableArray <CD3D9EnumDSMSConflict> DSMSConflictList;       // List of CD3D9EnumDSMSConflict
 
-    CD3D9EnumAdapterInfo* pAdapterInfo;
-    CD3D9EnumDeviceInfo* pDeviceInfo;
+  CD3D9EnumAdapterInfo* pAdapterInfo;
+  CD3D9EnumDeviceInfo*  pDeviceInfo;
 };
 
 //--------------------------------------------------------------------------------------
@@ -50,9 +50,9 @@ struct CD3D9EnumDeviceSettingsCombo
 class CD3D9EnumDeviceInfo {
 public:
   ~CD3D9EnumDeviceInfo();
-  UINT AdapterOrdinal;
+  UINT       AdapterOrdinal;
   D3DDEVTYPE DeviceType;
-  D3DCAPS9 Caps;
+  D3DCAPS9   Caps;
 
   // List of CD3D9EnumDeviceSettingsCombo* with a unique set 
   // of AdapterFormat, BackBufferFormat, and Windowed
@@ -71,8 +71,8 @@ public:
   D3DADAPTER_IDENTIFIER9 AdapterIdentifier;
   WCHAR                  szUniqueDescription[256];
 
-  CGrowableArray<D3DDISPLAYMODE> displayModeList;     // Array of supported D3DDISPLAYMODEs
-  CGrowableArray<CD3D9EnumDeviceInfo*> deviceInfoList; // Array of CD3D9EnumDeviceInfo* with unique supported DeviceTypes
+  CGrowableArray<D3DDISPLAYMODE>       displayModeList; // Array of supported D3DDISPLAYMODEs
+  CGrowableArray<CD3D9EnumDeviceInfo*> deviceInfoList;  // Array of CD3D9EnumDeviceInfo* with unique supported DeviceTypes
 };
 
 //--------------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ public:
   CD3D9Enumeration(IDirect3D9 *d3d9Context, bool doEnumeration);
   ~CD3D9Enumeration();
 
-  IDirect3DDevice9* WINAPI CreateRefDevice(HWND hWnd, bool bNullRef);
+  IDirect3DDevice9* WINAPI CreateRefDevice(HWND hWnd, bool bNullRef = false);
 
   // These should be called before Enumerate().
   //
@@ -148,7 +148,7 @@ public:
 
   // Call Enumerate() to enumerate available D3D adapters, devices, modes, etc.
   HRESULT Enumerate(
-      LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE IsD3D9DeviceAcceptableFunc = NULL,
+      LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE IsD3D9DeviceAcceptableFunc = NULL,
       void *pIsD3D9DeviceAcceptableFuncUserContext = NULL
   );
 
@@ -184,13 +184,34 @@ public:
     return NULL;
   }
 
+  D3DPRESENT_PARAMETERS *GetRefPP() {
+    return &m_ppRef;
+  }
+
 private:
+  D3DPRESENT_PARAMETERS m_ppRef = {
+    .BackBufferWidth            = 1,
+    .BackBufferHeight           = 1,
+    .BackBufferFormat           = D3DFMT_UNKNOWN,
+    .BackBufferCount            = 1,
+    .MultiSampleType            = D3DMULTISAMPLE_NONE,
+    .MultiSampleQuality         = 0,
+    .SwapEffect                 = D3DSWAPEFFECT_COPY,
+    .hDeviceWindow              = 0,
+    .Windowed                   = TRUE,
+    .EnableAutoDepthStencil     = false,
+    .AutoDepthStencilFormat     = D3DFMT_D16,
+    .Flags                      = 0,
+    .FullScreen_RefreshRateInHz = 0,
+    .PresentationInterval       = 0
+  };
+
   bool m_bHasEnumerated;
-  bool  m_bRequirePostPixelShaderBlending;
+  bool m_bRequirePostPixelShaderBlending;
 
   IDirect3D9 *m_pD3D;
 
-  LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE m_IsD3D9DeviceAcceptableFunc;
+  LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE m_IsD3D9DeviceAcceptableFunc;
   void *m_pIsD3D9DeviceAcceptableFuncUserContext;
 
   CGrowableArray<D3DFORMAT>              m_DepthStencilPossibleList;

@@ -6,6 +6,7 @@
 #include <Windows.h>
 
 #include <vector>
+#include <memory>
 #include <filesystem>
 
 #include <d3dx9.h>
@@ -21,12 +22,6 @@
 #define AppMain wWinMain
 #endif
 
-#define D3DFVF_CUSTOMVERTEX \
-  (D3DFVF_XYZ | D3DFVF_NORMAL | /* D3DFVF_DIFFUSE | */ D3DFVF_TEX1)
-
-// Managers
-// TODO: Move to AppState
-static std::shared_ptr<CMeshLoader> g_meshloader;
 
 //-----------------------------------------------------------------------------
 // Name: AppSetupD3DTransform()
@@ -43,13 +38,14 @@ HRESULT AppSetupD3DTransform(
 ) {
   // Create a view matrix that transforms world space to view space.
   // Use a right-handed coordinate system.
-  auto posVec = D3DXVECTOR3 { 0.0f, 0.0f, 0.0f };   // position where to look at
-  auto axiVec = D3DXVECTOR3 { 0.0f, 1.0f, 0.0f };   // positive y-axis is up
+  auto posVec = D3DXVECTOR3 { 0.0f, 0.0f, 0.0f };  // position where to look at
+  auto axiVec = D3DXVECTOR3 { 0.0f, 1.0f, 0.0f };  // positive y-axis is up
   D3DXMatrixLookAtRH(&view, &cameraVec, &posVec, &axiVec);
   HRESULT result = pD3D9Device->SetTransform(D3DTS_VIEW, &view);
   if (FAILED(result)) {
     DXTRACE_ERR_MSGBOX(
-      L"SetupTransform failed for view-space matrix", E_FAIL
+      L"SetupTransform failed for view-space matrix",
+      E_FAIL
     );
   }
 
@@ -68,7 +64,8 @@ HRESULT AppSetupD3DTransform(
   result = pD3D9Device->SetTransform(D3DTS_PROJECTION, &projection);
   if (FAILED(result)) {
     DXTRACE_ERR_MSGBOX(
-      L"SetupTransform failed for view-projection matrix", E_FAIL
+      L"SetupTransform failed for view-projection matrix",
+      E_FAIL
     );
   }
 
@@ -82,29 +79,74 @@ HRESULT AppSetupD3DTransform(
 // Name: AppInitD3D()
 // Desc: Initializes Direct3D
 //-----------------------------------------------------------------------------
-HRESULT AppInitD3D(HWND hWnd) {
-  auto pD3D9Device = GetAppState()->GetEnumerator()->CreateRefDevice(hWnd, false);
-  if (!pD3D9Device) {
-    DXTRACE_ERR_MSGBOX(L"Failed to create D3D9Device!", E_FAIL);
+HRESULT AppInitD3D(HWND hWnd, bool force = false)
+{
+  AppCtx *appCtx    = GetAppCtx();
+  auto *pD3D9Device = appCtx->GetD3D9Device();
+
+  // if we already have a device, try resetting it
+  if (appCtx->GetD3D9Inited() && pD3D9Device) {
+    DXTRACE_MSG(L"WARN: Calling AppInitD3D Twice!");
+    if (FAILED(pD3D9Device->Reset(appCtx->GetEnumerator()->GetRefPP()))) {
+      // TODO: print warning?
+      pD3D9Device->Release();
+    }
+  } else if (appCtx->GetD3D9Inited() && !pD3D9Device) {
+    appCtx->SetD3D9Inited(false);
+    return DXTRACE_ERR_MSGBOX(
+      L"AppInitD3D: Somehow initialized but no device pointer!",
+      E_FAIL
+    );
   }
-  GetAppState()->SetD3D9Device(pD3D9Device);
-  GetAppState()->SetDeviceCreateCalled(true);
-  GetAppState()->SetDeviceCreated(true);
+
+  // Normal creation or deferred creation if failed to reset
+  if (!pD3D9Device) {
+    pD3D9Device = appCtx->GetEnumerator()->CreateRefDevice(hWnd, false);
+    appCtx->SetDeviceCreateCalled(true);
+    if (!pD3D9Device) {
+      appCtx->SetD3D9Inited(false);
+      return E_FAIL;
+    }
+    appCtx->SetD3D9Device(pD3D9Device);
+    appCtx->SetDeviceCreated(true);
+  }
+
+  RECT    rc;
+  HRESULT hr;
 
   //// Create a viewport which hold information about which region to draw to.
-  RECT rc;
   GetClientRect(hWnd, &rc);
   D3DVIEWPORT9 viewport = {
     .X = 0, // start at top left corner
     .Y = 0,
-    .Width  = (DWORD)rc.right,    // use the entire window
-    .Height = (DWORD)rc.bottom,   // ..
-    .MinZ   = -1000.0f,           // minimum view distance
-    .MaxZ   =  1000.0f,           // maximum view distance
+    .Width  = (DWORD)rc.right,   // use the entire window
+    .Height = (DWORD)rc.bottom,  // ..
+    .MinZ   = appCtx->GetMinViewDistance(),
+    .MaxZ   = appCtx->GetMaxViewDistance(), 
   };
-  HRESULT result = pD3D9Device->SetViewport(&viewport);
-  if (FAILED(result)) {
-    return E_FAIL;
+  hr = pD3D9Device->SetViewport(&viewport);
+  if (FAILED(hr)) {
+    return DXTRACE_ERR_MSGBOX(
+      L"AppInitD3D SetViewport: failed",
+      hr
+    );
+  }
+
+  // Setup word-view and projection transforms
+  hr = AppSetupD3DTransform(
+    hWnd,
+    pD3D9Device,
+    appCtx->GetCurrentViewMatrix(),
+    appCtx->GetCurrentProjectionMatrix(),
+    appCtx->GetMinViewDistance(),
+    appCtx->GetMaxViewDistance(),
+    appCtx->GetCameraVec()
+  );
+  if (FAILED(hr)) {
+    return DXTRACE_ERR_MSGBOX(
+      L"AppInitD3D AppSetupD3DTransform: failed",
+      hr
+    );
   }
 
   pD3D9Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -112,18 +154,8 @@ HRESULT AppInitD3D(HWND hWnd) {
   pD3D9Device->SetRenderState(D3DRS_AMBIENT, 0xFF323232);
   pD3D9Device->SetRenderState(D3DRS_COLORVERTEX, 1);
 
+  appCtx->SetD3D9Inited(true);
   return S_OK;
-}
-
-//-----------------------------------------------------------------------------
-// Name: AppCleanup()
-// Desc: Releases all previously initialized objects
-// TODO: Needs to be more robust ... probably
-//-----------------------------------------------------------------------------
-VOID AppCleanup() {
-  if (g_meshloader != NULL) {
-    g_meshloader.reset();
-  }
 }
 
 //-----------------------------------------------------------------------------
@@ -158,7 +190,7 @@ HRESULT AppRemixSetup(
     .hash  = 0x3,
     .radiance = {0, 0, 0},
   };
-  r = GetAppState()->GetRemix().CreateLight(&g_remix_lightInfo, &g_remix_scene_light);
+  r = GetAppCtx()->GetRemix().CreateLight(&g_remix_lightInfo, &g_remix_scene_light);
   if (r != REMIXAPI_ERROR_CODE_SUCCESS) {
     printf("remix::CreateLight() failed: %d\n", r);
     return r;
@@ -184,7 +216,7 @@ VOID AppBeginSceneCallback() {
     .pNext = &parametersForCamera,
     .type = REMIXAPI_CAMERA_TYPE_WORLD 
   };
-  // GetAppState()->GetRemix().SetupCamera(&cameraInfo);
+  // GetAppCtx()->GetRemix().SetupCamera(&cameraInfo);
 
 }
 
@@ -194,7 +226,8 @@ VOID AppBeginSceneCallback() {
 // Desc: primary remix api callback
 //-----------------------------------------------------------------------------
 VOID AppEndSceneCallback() {
-  const auto remix = GetAppState()->GetRemix();
+  const auto remix      = GetAppCtx()->GetRemix();
+  const auto meshloader = GetAppCtx()->GetMeshLoader();
 
   // Remix API doesn't allow updates
   // So we stupidly recreate it for each frame because why not ...
@@ -223,7 +256,9 @@ VOID AppEndSceneCallback() {
   }
 
   // Draw OBJ mesh instances
-  g_meshloader->GetMesh()->DrawSubset(0);
+  if (meshloader) {
+    meshloader->GetMesh()->DrawSubset(0);
+  }
 
   // Let there be light
   remix.CreateLight(&g_remix_lightInfo, &g_remix_scene_light);
@@ -258,82 +293,58 @@ INT AppMain(
   UNREFERENCED_PARAMETER(lpCmdLine);
   UNREFERENCED_PARAMETER(nShowCmd);
 
-  HRESULT hr = 0;
-
   FILE* f = nullptr;
   (void) freopen_s(&f, "CONIN$", "r",  stdin);
   (void) freopen_s(&f, "CONOUT$", "w", stdout);
   (void) freopen_s(&f, "CONOUT$", "w", stderr);
 
-  // Grab appState early
-  AppState *appState = GetAppState();
-  auto remix = appState->GetRemix();
+  // Grab appCtx early
+  AppCtx *appCtx = GetAppCtx();
+  auto remix = appCtx->GetRemix();
 
   // TODO: AppInit()
-  appState->SetInited(true);
+  appCtx->SetInited(true);
 
-  // Create Window
+  HRESULT hr = 0;
+
+  //// Create Window
   HWND appWindow = NULL;
   {
     hr = AppCreateWindow(L"remix-api-sandbox", NULL, NULL, NULL, 100, 100);
     if (FAILED(hr)) {
-      DXTRACE_ERR_MSGBOX(
+      return DXTRACE_ERR_MSGBOX(
         L"Failed to create application window",
         E_FAIL
       );
     } else {
-      appWindow = appState->GetHWNDFocus();
+      appWindow = appCtx->GetHWNDFocus();
     }
-
     ShowWindow(appWindow, SW_SHOWDEFAULT);
     UpdateWindow(appWindow);
   }
 
-  //
-  // Direct3D / Remix
-  //
+  //// Direct3D / Remix / Managers
   {
     // Initialize Direct3D
     hr = AppInitD3D(appWindow);
     if (FAILED(hr)) {
-      DXTRACE_ERR_MSGBOX(L"AppInitD3D: failed", hr);
+      return DXTRACE_ERR_MSGBOX(L"AppInitD3D: failed", hr);
     }
 
-    // Setup word-view and projection transforms
-    hr = AppSetupD3DTransform(
-      appWindow,
-      appState->GetD3D9Device(),
-      appState->GetCurrentViewMatrix(),
-      appState->GetCurrentProjectionMatrix(),
-      appState->GetMinViewDistance(),
-      appState->GetMaxViewDistance(),
-      appState->GetCameraVec()
-    );
-    if (FAILED(hr)) {
-      DXTRACE_ERR_MSGBOX(L"AppSetupD3DTransform: failed", hr);
-    }
-
-    // Initialize Remix
+    // Setup Remix
     hr = AppRemixSetup(AppBeginSceneCallback, AppEndSceneCallback);
     if (FAILED(hr)) {
-      DXTRACE_ERR_MSGBOX(
-        L"AppRemixSetup: failed",
-        hr
-      );
+      return DXTRACE_ERR_MSGBOX(L"AppRemixSetup: failed", hr);
+    }
+
+    // Setup OBJ meshloader
+    std::filesystem::path objfilepath("H:/Share/Sources/magos/game/models/teapot.obj");
+    if (FAILED(appCtx->GetMeshLoader()->Create(appCtx->GetD3D9Device(), objfilepath))) {
+      return DXTRACE_ERR_MSGBOX(L"WARN: Failed to parse OBJ", E_FAIL);
     }
   }
 
-  // Setup OBJ meshloader
-  g_meshloader.reset(new CMeshLoader());
-  std::filesystem::path objfilepath("H:/Share/Sources/magos/game/models/teapot.obj");
-  if (FAILED(g_meshloader->Create(appState->GetD3D9Device(), objfilepath))) {
-    DXUTOutputDebugString(
-      L"WARN: Failed to parse OBJ: %s\n",
-      objfilepath.c_str()
-    );
-  }
-
-  // Enter the message loop
+  //// Enter the message loop
   MSG msg;
   ZeroMemory(&msg, sizeof(msg));
   while(msg.message != WM_QUIT) {
@@ -341,10 +352,11 @@ INT AppMain(
       TranslateMessage(&msg);
       DispatchMessage(&msg);
     }
-    else AppRender(appState->GetD3D9Device());
+    if (!appCtx->GetIsRenderingPaused()) {
+      AppRender(appCtx->GetD3D9Device());
+    }
   }
-  AppCleanup();
-
-  UnregisterClassW(L"Direct3DWindowClass", appState->GetHInstance());
-  return 0;
+  UnregisterClassW(L"Direct3DWindowClass", appCtx->GetHInstance()); 
+  return S_OK;
 }
+

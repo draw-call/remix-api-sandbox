@@ -3,7 +3,7 @@
 #include <d3dx9.h>
 
 // IsDeviceAcceptable
-typedef bool(CALLBACK *LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE)(
+typedef bool(CALLBACK *LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE)(
     D3DCAPS9 *pCaps,
     D3DFORMAT AdapterFormat,
     D3DFORMAT BackBufferFormat,
@@ -12,30 +12,30 @@ typedef bool(CALLBACK *LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE)(
 );
 
 // DeviceCreated
-typedef HRESULT(CALLBACK *LPAPPSTATECALLBACKD3D9DEVICECREATED)(
+typedef HRESULT(CALLBACK *LPAPPCTXCALLBACKD3D9DEVICECREATED)(
     IDirect3DDevice9 *pd3dDevice,
     const D3DSURFACE_DESC *pBackBufferSurfaceDesc,
     void *pUserContext
 );
 
 // DeviceDestroyed
-typedef void(CALLBACK *LPAPPSTATECALLBACKD3D9DEVICEDESTROYED)(void *pUserContext);
+typedef void(CALLBACK *LPAPPCTXCALLBACKD3D9DEVICEDESTROYED)(void *pUserContext);
 
 // DeviceRemoved
-typedef bool(CALLBACK *LPAPPSTATECALLBACKDEVICEREMOVED)(void* pUserContext);
+typedef bool(CALLBACK *LPAPPCTXCALLBACKDEVICEREMOVED)(void* pUserContext);
 
 // DeviceLost
-typedef void(CALLBACK *LPAPPSTATECALLBACKD3D9DEVICELOST)(void *pUserContext);
+typedef void(CALLBACK *LPAPPCTXCALLBACKD3D9DEVICELOST)(void *pUserContext);
 
 // DeviceReset
-typedef HRESULT(CALLBACK *LPAPPSTATECALLBACKD3D9DEVICERESET)(
+typedef HRESULT(CALLBACK *LPAPPCTXCALLBACKD3D9DEVICERESET)(
     IDirect3DDevice9 *pd3dDevice,
     const D3DSURFACE_DESC *pBackBufferSurfaceDesc,
     void *pUserContext
 );
 
 // FrameRender
-typedef void(CALLBACK *LPAPPSTATECALLBACKD3D9FRAMERENDER)(
+typedef void(CALLBACK *LPAPPCTXCALLBACKD3D9FRAMERENDER)(
     IDirect3DDevice9 *pd3dDevice,
     double fTime,
     float fElapsedTime,
@@ -43,14 +43,14 @@ typedef void(CALLBACK *LPAPPSTATECALLBACKD3D9FRAMERENDER)(
 );
 
 // FrameMove
-typedef void(CALLBACK *LPAPPSTATECALLBACKFRAMEMOVE)(
+typedef void(CALLBACK *LPAPPCTXCALLBACKFRAMEMOVE)(
   double fTime,
   float fElapsedTime,
   void *pUserContext
 );
 
 // KeyBoard Event
-typedef void(CALLBACK *LPAPPSTATECALLBACKKEYBOARD)(
+typedef void(CALLBACK *LPAPPCTXCALLBACKKEYBOARD)(
   UINT nChar,
   bool bKeyDown,
   bool bAltDown,
@@ -58,7 +58,7 @@ typedef void(CALLBACK *LPAPPSTATECALLBACKKEYBOARD)(
 );
 
 // MouseEvent
-typedef void(CALLBACK *LPAPPSTATECALLBACKMOUSE)(
+typedef void(CALLBACK *LPAPPCTXCALLBACKMOUSE)(
   bool bLeftButtonDown,
   bool bRightButtonDown,
   bool bMiddleButtonDown,
@@ -71,7 +71,7 @@ typedef void(CALLBACK *LPAPPSTATECALLBACKMOUSE)(
 );
 
 // MsgProc
-typedef LRESULT(CALLBACK *LPAPPSTATECALLBACKMSGPROC)(
+typedef LRESULT(CALLBACK *LPAPPCTXCALLBACKMSGPROC)(
   HWND hWnd,
   UINT uMsg,
   WPARAM wParam,
@@ -80,7 +80,7 @@ typedef LRESULT(CALLBACK *LPAPPSTATECALLBACKMSGPROC)(
   void *pUserContext );
 
 // ModifyDeviceSettings
-typedef bool(CALLBACK *LPAPPSTATECALLBACKMODIFYDEVICESETTINGS)(
+typedef bool(CALLBACK *LPAPPCTXCALLBACKMODIFYDEVICESETTINGS)(
   void *pDeviceSettings,
   void *pUserContext
 );

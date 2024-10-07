@@ -55,9 +55,9 @@ CD3D9Enumeration::CD3D9Enumeration(IDirect3D9 *d3d9Context, bool doEnumeration)
   ResetPossiblePresentIntervalList();
 
   if (doEnumeration && !HasEnumerated()) {
-    LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE func = nullptr;
+    LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE func = nullptr;
     void *context = nullptr;
-    // GetAppState()->AppGetCallbackD3D9DeviceAcceptable(&m_IsD3D9DeviceAcceptableFunc, &m_pIsD3D9DeviceAcceptableFuncUserContext);
+    // GetAppCtx()->AppGetCallbackD3D9DeviceAcceptable(&m_IsD3D9DeviceAcceptableFunc, &m_pIsD3D9DeviceAcceptableFuncUserContext);
     if (FAILED(Enumerate())) {
       DXTRACE_ERR_MSGBOX(L"CD3D9Enumeration failed constructor enumeration!", E_FAIL);
     }
@@ -74,39 +74,25 @@ IDirect3DDevice9 *WINAPI CD3D9Enumeration::CreateRefDevice(
     HWND hWnd,
     bool bNullRef
 ) {
-  HRESULT hr;
   assert(m_pD3D);
 
   D3DDISPLAYMODE Mode;
   m_pD3D->GetAdapterDisplayMode(0, &Mode);
 
-  RECT rc;
-  GetClientRect(hWnd, &rc);
+  m_ppRef.BackBufferHeight = m_nMinWidth;
+  m_ppRef.BackBufferWidth  = m_nMinHeight;
+  m_ppRef.BackBufferFormat = Mode.Format;
+  m_ppRef.hDeviceWindow    = hWnd;
+  m_ppRef.FullScreen_RefreshRateInHz = m_nRefreshMax;
 
-  D3DPRESENT_PARAMETERS pp = {
-    .BackBufferWidth        = static_cast<UINT>(rc.right),
-    .BackBufferHeight       = static_cast<UINT>(rc.bottom),
-    .BackBufferFormat       = Mode.Format,
-    .BackBufferCount        = 1,
-    .MultiSampleType        = D3DMULTISAMPLE_NONE,
-    .MultiSampleQuality     = 0,
-    .SwapEffect             = D3DSWAPEFFECT_COPY,
-    .hDeviceWindow          = hWnd,
-    .Windowed               = TRUE,
-    .EnableAutoDepthStencil = false,
-    .AutoDepthStencilFormat = D3DFMT_D16,
-    .Flags                  = 0,
-    .FullScreen_RefreshRateInHz = 0,
-    .PresentationInterval       = 0
-  };
-
+  HRESULT hr;
   IDirect3DDevice9 *pd3dDevice = NULL;
   hr = m_pD3D->CreateDevice(
     D3DADAPTER_DEFAULT,
     bNullRef ? D3DDEVTYPE_NULLREF : D3DDEVTYPE_REF,
     hWnd,
     D3DCREATE_HARDWARE_VERTEXPROCESSING,
-    &pp,
+    &m_ppRef,
     &pd3dDevice
   );
 
@@ -128,7 +114,7 @@ IDirect3DDevice9 *WINAPI CD3D9Enumeration::CreateRefDevice(
 // through the ConfirmDevice callback.
 //--------------------------------------------------------------------------------------
 HRESULT CD3D9Enumeration::Enumerate(
-    LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE IsD3D9DeviceAcceptableFunc,
+    LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE IsD3D9DeviceAcceptableFunc,
     void *pIsD3D9DeviceAcceptableFuncUserContext
 )
 {

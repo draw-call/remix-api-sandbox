@@ -1,5 +1,4 @@
 #pragma once
-
 #include <assert.h>
 #include <d3dx9.h>
 
@@ -10,31 +9,35 @@
 #include "dxerror.hpp"
 #include "statecb.hpp"
 #include "device.hpp"
+#include "meshloader.hpp"
+
+#ifndef DEFAULT_VIEW_DISTANCE
+#define DEFAULT_VIEW_DISTANCE 1000.0f
+#endif
 
 class StateLock;
-class AppState;
-class AppStateManager;
+class AppCtx;
+class AppCtxManager;
 
-static std::unique_ptr<AppState> g_state;
-
+static bool g_bThreadSafe;
 static CRITICAL_SECTION g_cs;
-static bool             g_bThreadSafe;
+static std::unique_ptr<AppCtx> g_ctx;
 
 // Pauses time or rendering.  Keeps a ref count so pausing can be layered
 void WINAPI AppPause(bool bPauseTime, bool bPauseRendering);
 
 // Return and optionally initialize the application global state 
-AppState* GetAppState();
+AppCtx* GetAppCtx();
 
 //--------------------------------------------------------------------------------------
 // Helper macros to build member functions that access member variables with thread safety
 //--------------------------------------------------------------------------------------
-#define SET_ACCESSOR( x, y )       inline void Set##y( x t )   { _StateLock l; m_state.m_##y = t; };
-#define GET_ACCESSOR( x, y )       inline x Get##y()           { _StateLock l; return m_state.m_##y; };
+#define SET_ACCESSOR( x, y )       inline void Set##y( x t )   { _StateLock l; m_ctx.m_##y = t; };
+#define GET_ACCESSOR( x, y )       inline x Get##y()           { _StateLock l; return m_ctx.m_##y; };
 #define GET_SET_ACCESSOR( x, y )   SET_ACCESSOR( x, y ) GET_ACCESSOR( x, y )
 
-#define SETP_ACCESSOR( x, y )      inline void Set##y( x* t )  { _StateLock l; m_state.m_##y = *t; };
-#define GETP_ACCESSOR( x, y )      inline x* Get##y()          { _StateLock l; return &m_state.m_##y; };
+#define SETP_ACCESSOR( x, y )      inline void Set##y( x* t )  { _StateLock l; m_ctx.m_##y = *t; };
+#define GETP_ACCESSOR( x, y )      inline x* Get##y()          { _StateLock l; return &m_ctx.m_##y; };
 #define GETP_SETP_ACCESSOR( x, y ) SETP_ACCESSOR( x, y ) GETP_ACCESSOR( x, y )
 
 
@@ -56,44 +59,48 @@ public:
 };
 
 //--------------------------------------------------------------------------------------
-// Call-Once AppStateManager
+// Call-Once AppCtxManager
 //--------------------------------------------------------------------------------------
-class AppStateManager {
+class AppCtxManager {
 public:
-  AppStateManager();
-  ~AppStateManager();
+  AppCtxManager();
+  ~AppCtxManager();
 };
 
 
 //--------------------------------------------------------------------------------------
 // Thread-Safe (capable) App State Property Holder
 //--------------------------------------------------------------------------------------
-class AppState
+class AppCtx
 {
 protected:
   struct AppDeviceSettings
   {
-    UINT AdapterOrdinal;
+    UINT       AdapterOrdinal;
     D3DDEVTYPE DeviceType;
-    D3DFORMAT AdapterFormat;
-    DWORD BehaviorFlags;
+    D3DFORMAT  AdapterFormat;
+    DWORD      BehaviorFlags;
     D3DPRESENT_PARAMETERS pp;
   };
-  struct State {
+  struct Context {
     // State Properties
     // NOTE: Check property accessor macros in public section
-    IDirect3D9* m_D3D9;                         // the main D3D9 object
-    IDirect3DDevice9* m_D3D9Device;             // the D3D9 rendering device
-    AppDeviceSettings* m_CurrentDeviceSettings; // current device settings
-    D3DSURFACE_DESC m_BackBufferSurfaceDesc9;   // D3D9 back buffer surface description
-    D3DCAPS9 m_Caps;                            // D3D caps for current device
-    bool m_DeviceLost;
+    IDirect3D9*        m_D3D9;                   // the main D3D9 object
+    IDirect3DDevice9*  m_D3D9Device;             // the D3D9 rendering device
+    AppDeviceSettings* m_CurrentDeviceSettings;  // current device settings
+    D3DSURFACE_DESC    m_BackBufferSurfaceDesc9; // D3D9 back buffer surface description
+    D3DCAPS9 m_Caps;                             // D3D caps for current device
+    bool     m_D3D9Inited;
+    bool     m_DeviceLost;
 
     // RTX Remix Interface
     remixapi_Interface m_Remix;
 
     // Device Enumerator
     CD3D9Enumeration *m_Enumerator;
+
+    // Wavefront (.OBJ) Manager
+    CMeshLoader *m_MeshLoader;
     
     bool m_Keys[256];       // array of key state
     bool m_LastKeys[256];   // array of last key state
@@ -138,97 +145,98 @@ protected:
     bool m_Maximized;
     bool m_NotifyOnMouseMove;  // if true, include WM_MOUSEMOVE in mousecallback
 
+    WCHAR*    m_WindowTitle;
     HINSTANCE m_HInstance;
-    HWND  m_HWNDFocus;
-    HWND  m_HWNDDeviceWindowed;
-    HWND  m_HWNDDeviceFullScreen;
-    WCHAR* m_WindowTitle;
+    HWND m_HWNDFocus;
+    HWND m_HWNDDeviceWindowed;
+    HWND m_HWNDDeviceFullScreen;
 
     double m_Time;          // current time in seconds
     double m_AbsoluteTime;  // absolute time in seconds
     float  m_ElapsedTime;   // time elapsed since last frame
 
-    float  m_MinViewDistance;
-    float  m_MaxViewDistance;
+    float m_MinViewDistance;
+    float m_MaxViewDistance;
+    
+    float m_CameraFOV;
+    D3DXVECTOR3 m_CameraVec;
 
-    D3DXVECTOR3  m_CameraVec;
     D3DXMATRIX  m_CurrentViewMatrix;
     D3DXMATRIX  m_CurrentProjectionMatrix;
 
     // State Callbacks
-    LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE m_IsD3D9DeviceAcceptableFunc; // D3D9 is device acceptable callback
+    LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE m_IsD3D9DeviceAcceptableFunc; // D3D9 is device acceptable callback
     void* m_IsD3D9DeviceAcceptableFuncUserContext;                         // user context for is D3D9 device acceptable callback
 
-    LPAPPSTATECALLBACKD3D9DEVICECREATED m_D3D9DeviceCreatedFunc;       // D3D9 device created callback
+    LPAPPCTXCALLBACKD3D9DEVICECREATED m_D3D9DeviceCreatedFunc;       // D3D9 device created callback
     void* m_D3D9DeviceCreatedFuncUserContext;                          // user context for D3D9 device created callback
 
-    LPAPPSTATECALLBACKD3D9DEVICERESET m_D3D9DeviceResetFunc;           // D3D9 device reset callback
+    LPAPPCTXCALLBACKD3D9DEVICERESET m_D3D9DeviceResetFunc;           // D3D9 device reset callback
     void* m_D3D9DeviceResetFuncUserContext;                            // user context for D3D9 device reset callback
 
-    LPAPPSTATECALLBACKD3D9DEVICELOST m_D3D9DeviceLostFunc;             // D3D9 device lost callback
+    LPAPPCTXCALLBACKD3D9DEVICELOST m_D3D9DeviceLostFunc;             // D3D9 device lost callback
     void* m_D3D9DeviceLostFuncUserContext;                             // user context for D3D9 device lost callback
 
-    LPAPPSTATECALLBACKD3D9DEVICEDESTROYED m_D3D9DeviceDestroyedFunc;   // D3D9 device destroyed callback
+    LPAPPCTXCALLBACKD3D9DEVICEDESTROYED m_D3D9DeviceDestroyedFunc;   // D3D9 device destroyed callback
     void* m_D3D9DeviceDestroyedFuncUserContext;                        // user context for D3D9 device destroyed callback
 
-    LPAPPSTATECALLBACKD3D9FRAMERENDER m_D3D9FrameRenderFunc;           // D3D9 frame render callback
+    LPAPPCTXCALLBACKD3D9FRAMERENDER m_D3D9FrameRenderFunc;           // D3D9 frame render callback
     void* m_D3D9FrameRenderFuncUserContext;                            // user context for D3D9 frame render callback
 
-    LPAPPSTATECALLBACKMODIFYDEVICESETTINGS m_ModifyDeviceSettingsFunc; // modify Direct3D device settings callback
+    LPAPPCTXCALLBACKMODIFYDEVICESETTINGS m_ModifyDeviceSettingsFunc; // modify Direct3D device settings callback
     void* m_ModifyDeviceSettingsFuncUserContext;                       // user context for modify Direct3D device settings callback
 
-    LPAPPSTATECALLBACKDEVICEREMOVED m_DeviceRemovedFunc;               // Direct3D device removed callback
+    LPAPPCTXCALLBACKDEVICEREMOVED m_DeviceRemovedFunc;               // Direct3D device removed callback
     void* m_DeviceRemovedFuncUserContext;                              // user context for Direct3D device removed callback
 
-    LPAPPSTATECALLBACKFRAMEMOVE m_FrameMoveFunc;       // frame move callback
+    LPAPPCTXCALLBACKFRAMEMOVE m_FrameMoveFunc;       // frame move callback
     void* m_FrameMoveFuncUserContext;                  // user context for frame move callback
 
-    LPAPPSTATECALLBACKKEYBOARD m_KeyboardFunc;         // keyboard callback
+    LPAPPCTXCALLBACKKEYBOARD m_KeyboardFunc;         // keyboard callback
     void* m_KeyboardFuncUserContext;                   // user context for keyboard callback
 
-    LPAPPSTATECALLBACKMOUSE m_MouseFunc;               // mouse callback
+    LPAPPCTXCALLBACKMOUSE m_MouseFunc;               // mouse callback
     void* m_MouseFuncUserContext;                      // user context for mouse callback
 
-    LPAPPSTATECALLBACKMSGPROC m_WindowMsgFunc;         // window messages callback   
+    LPAPPCTXCALLBACKMSGPROC m_WindowMsgFunc;         // window messages callback   
     void* m_WindowMsgFuncUserContext;                  // user context for window messages callback
   };
 
-  State m_state;
+  Context m_ctx;
 
 public:
-  AppState() {
-    assert(!g_state);
+  AppCtx() {
+    assert(!g_ctx);
     if (g_bThreadSafe) {
-      InitializeCriticalSectionAndSpinCount(&g_cs, 1000);
+      assert(InitializeCriticalSectionAndSpinCount(&g_cs, 1000));
     }
-    ZeroMemory(&m_state, sizeof(State));
+    ZeroMemory(&m_ctx, sizeof(Context));
+    ZeroMemory(&m_ctx.m_CameraVec, sizeof(m_ctx.m_CameraVec));
 
     // Defaults
-    m_state.m_OverrideStartX  = -1;
-    m_state.m_OverrideStartY  = -1;
+    m_ctx.m_OverrideStartX  = -1;
+    m_ctx.m_OverrideStartY  = -1;
 
-    m_state.m_IsActive        = true;
+    m_ctx.m_IsActive        = true;
 
-    m_state.m_HandleEscape    = true;
-    m_state.m_HandleAltEnter  = true;
-    m_state.m_HandlePause     = true;
+    m_ctx.m_HandleEscape    = true;
+    m_ctx.m_HandleAltEnter  = true;
+    m_ctx.m_HandlePause     = true;
 
-    m_state.m_MinViewDistance = -1000.0f;
-    m_state.m_MaxViewDistance =  1000.0f;
+    m_ctx.m_MinViewDistance = -(DEFAULT_VIEW_DISTANCE);
+    m_ctx.m_MaxViewDistance =   DEFAULT_VIEW_DISTANCE;
 
-    ZeroMemory(&m_state.m_CameraVec, sizeof(m_state.m_CameraVec));
-    m_state.m_CameraVec.x = 0;
-    m_state.m_CameraVec.y = 0;
-    m_state.m_CameraVec.z = -20.0f;
-
-    m_state.m_CurrentViewMatrix       = D3DXMATRIX();
-    m_state.m_CurrentProjectionMatrix = D3DXMATRIX();
+    m_ctx.m_CameraVec.x = 0;
+    m_ctx.m_CameraVec.y = 0;
+    m_ctx.m_CameraVec.z = -20.0f;
+    m_ctx.m_CurrentViewMatrix       = D3DXMATRIX();
+    m_ctx.m_CurrentProjectionMatrix = D3DXMATRIX();
   }
-  ~AppState() {
+  ~AppCtx() {
     if (g_bThreadSafe) {
       DeleteCriticalSection(&g_cs);
     }
-    delete m_state.m_Enumerator;
+    delete m_ctx.m_Enumerator;
   }
 
   //--------------------------------------------------------------------------------------
@@ -241,6 +249,7 @@ public:
   GET_SET_ACCESSOR   (AppDeviceSettings*, CurrentDeviceSettings);
   GETP_SETP_ACCESSOR (D3DSURFACE_DESC, BackBufferSurfaceDesc9);
   GETP_SETP_ACCESSOR (D3DCAPS9, Caps);
+  GET_SET_ACCESSOR   (bool, D3D9Inited);
   GET_SET_ACCESSOR   (bool, DeviceLost);
   
   // RTX Remix
@@ -249,10 +258,13 @@ public:
   // Device Enumerator
   GET_SET_ACCESSOR(CD3D9Enumeration*, Enumerator);
 
+  // Wavefront (.OBJ) Manager
+  GET_SET_ACCESSOR(CMeshLoader*, MeshLoader);
+
   // Inputs
-  GET_ACCESSOR(bool*, Keys);
-  GET_ACCESSOR(bool*, LastKeys);
-  GET_ACCESSOR(bool*, MouseButtons);
+  GET_ACCESSOR(bool*,  Keys);
+  GET_ACCESSOR(bool*,  LastKeys);
+  GET_ACCESSOR(bool*,  MouseButtons);
 
   // Window Overrides
   GET_SET_ACCESSOR(int,  OverrideStartX);
@@ -268,12 +280,12 @@ public:
   GET_SET_ACCESSOR(bool, Maximized);
 
   // Window Management
+  GET_SET_ACCESSOR(WCHAR*, WindowTitle);
   GET_SET_ACCESSOR(HINSTANCE, HInstance);
   GET_SET_ACCESSOR(HWND, HWNDFocus);
   GET_SET_ACCESSOR(HWND, HWNDDeviceWindowed);
   GET_SET_ACCESSOR(HWND, HWNDDeviceFullScreen);
   GET_SET_ACCESSOR(bool, ShowCursorWhenFullScreen);
-  GET_SET_ACCESSOR(WCHAR *, WindowTitle);
 
   // Init Flags
   GET_SET_ACCESSOR(bool, Inited);
@@ -315,6 +327,7 @@ public:
   GET_SET_ACCESSOR(float,  MinViewDistance);
   GET_SET_ACCESSOR(float,  MaxViewDistance);
   GET_SET_ACCESSOR(D3DXVECTOR3, CameraVec);
+  GET_SET_ACCESSOR(float, CameraFOV);
 
   // View Transforms
   GET_SET_ACCESSOR(D3DXMATRIX, CurrentViewMatrix);
@@ -323,19 +336,19 @@ public:
   //--------------------------------------------------------------------------------------
   // Callback Property Accessors
   //--------------------------------------------------------------------------------------
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE, IsD3D9DeviceAcceptableFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKD3D9DEVICECREATED,      D3D9DeviceCreatedFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKD3D9DEVICERESET,        D3D9DeviceResetFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKD3D9DEVICELOST,         D3D9DeviceLostFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKD3D9DEVICEDESTROYED,    D3D9DeviceDestroyedFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKD3D9FRAMERENDER,        D3D9FrameRenderFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE, IsD3D9DeviceAcceptableFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKD3D9DEVICECREATED,      D3D9DeviceCreatedFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKD3D9DEVICERESET,        D3D9DeviceResetFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKD3D9DEVICELOST,         D3D9DeviceLostFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKD3D9DEVICEDESTROYED,    D3D9DeviceDestroyedFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKD3D9FRAMERENDER,        D3D9FrameRenderFunc);
 
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKMODIFYDEVICESETTINGS, ModifyDeviceSettingsFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKDEVICEREMOVED,        DeviceRemovedFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKFRAMEMOVE,            FrameMoveFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKKEYBOARD,             KeyboardFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKMOUSE,                MouseFunc);
-  GET_SET_ACCESSOR(LPAPPSTATECALLBACKMSGPROC,              WindowMsgFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKMODIFYDEVICESETTINGS, ModifyDeviceSettingsFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKDEVICEREMOVED,        DeviceRemovedFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKFRAMEMOVE,            FrameMoveFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKKEYBOARD,             KeyboardFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKMOUSE,                MouseFunc);
+  GET_SET_ACCESSOR(LPAPPCTXCALLBACKMSGPROC,              WindowMsgFunc);
 
 
   //--------------------------------------------------------------------------------------
@@ -360,70 +373,70 @@ public:
   // Callback Setters
   // Mandatory
   //--------------------------------------------------------------------------------------
-  void WINAPI AppSetCallbackD3D9DeviceAcceptable(LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE pCallback, void* pUserContext)
+  void WINAPI AppSetCallbackD3D9DeviceAcceptable(LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE pCallback, void* pUserContext)
   {
-    GetAppState()->SetIsD3D9DeviceAcceptableFunc(pCallback);
-    GetAppState()->SetIsD3D9DeviceAcceptableFuncUserContext(pUserContext);
+    GetAppCtx()->SetIsD3D9DeviceAcceptableFunc(pCallback);
+    GetAppCtx()->SetIsD3D9DeviceAcceptableFuncUserContext(pUserContext);
   };
-  void WINAPI AppSetCallbackD3D9DeviceCreated(LPAPPSTATECALLBACKD3D9DEVICECREATED pCallback, void* pUserContext)
+  void WINAPI AppSetCallbackD3D9DeviceCreated(LPAPPCTXCALLBACKD3D9DEVICECREATED pCallback, void* pUserContext)
   {
-    GetAppState()->SetD3D9DeviceCreatedFunc(pCallback);
-    GetAppState()->SetD3D9DeviceCreatedFuncUserContext(pUserContext);
+    GetAppCtx()->SetD3D9DeviceCreatedFunc(pCallback);
+    GetAppCtx()->SetD3D9DeviceCreatedFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackD3D9DeviceReset(LPAPPSTATECALLBACKD3D9DEVICERESET pCallback, void* pUserContext)
+  void WINAPI AppSetCallbackD3D9DeviceReset(LPAPPCTXCALLBACKD3D9DEVICERESET pCallback, void* pUserContext)
   {
-    GetAppState()->SetD3D9DeviceResetFunc(pCallback);
-    GetAppState()->SetD3D9DeviceResetFuncUserContext(pUserContext);
+    GetAppCtx()->SetD3D9DeviceResetFunc(pCallback);
+    GetAppCtx()->SetD3D9DeviceResetFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackD3D9DeviceLost(LPAPPSTATECALLBACKD3D9DEVICELOST pCallback, void* pUserContext)
+  void WINAPI AppSetCallbackD3D9DeviceLost(LPAPPCTXCALLBACKD3D9DEVICELOST pCallback, void* pUserContext)
   {
-    GetAppState()->SetD3D9DeviceLostFunc(pCallback);
-    GetAppState()->SetD3D9DeviceLostFuncUserContext(pUserContext);
+    GetAppCtx()->SetD3D9DeviceLostFunc(pCallback);
+    GetAppCtx()->SetD3D9DeviceLostFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackD3D9DeviceDestroyed(LPAPPSTATECALLBACKD3D9DEVICEDESTROYED pCallback, void* pUserContext)
+  void WINAPI AppSetCallbackD3D9DeviceDestroyed(LPAPPCTXCALLBACKD3D9DEVICEDESTROYED pCallback, void* pUserContext)
   {
-    GetAppState()->SetD3D9DeviceDestroyedFunc(pCallback);
-    GetAppState()->SetD3D9DeviceDestroyedFuncUserContext(pUserContext);
+    GetAppCtx()->SetD3D9DeviceDestroyedFunc(pCallback);
+    GetAppCtx()->SetD3D9DeviceDestroyedFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackD3D9FrameRender(LPAPPSTATECALLBACKD3D9FRAMERENDER pCallback, void* pUserContext)
+  void WINAPI AppSetCallbackD3D9FrameRender(LPAPPCTXCALLBACKD3D9FRAMERENDER pCallback, void* pUserContext)
   {
-    GetAppState()->SetD3D9FrameRenderFunc(pCallback);
-    GetAppState()->SetD3D9FrameRenderFuncUserContext(pUserContext);
+    GetAppCtx()->SetD3D9FrameRenderFunc(pCallback);
+    GetAppCtx()->SetD3D9FrameRenderFuncUserContext(pUserContext);
   }
-  void WINAPI AppGetCallbackD3D9DeviceAcceptable(LPAPPSTATECALLBACKISD3D9DEVICEACCEPTABLE* ppCallback, void** ppUserContext)
+  void WINAPI AppGetCallbackD3D9DeviceAcceptable(LPAPPCTXCALLBACKISD3D9DEVICEACCEPTABLE* ppCallback, void** ppUserContext)
   {
-    *ppCallback    = GetAppState()->GetIsD3D9DeviceAcceptableFunc();
-    *ppUserContext = GetAppState()->GetIsD3D9DeviceAcceptableFuncUserContext();
+    *ppCallback    = GetAppCtx()->GetIsD3D9DeviceAcceptableFunc();
+    *ppUserContext = GetAppCtx()->GetIsD3D9DeviceAcceptableFuncUserContext();
   }
   
   //--------------------------------------------------------------------------------------
   // Callback Setters
   // Optional
   //--------------------------------------------------------------------------------------
-  void WINAPI AppSetCallbackDeviceChanging(LPAPPSTATECALLBACKMODIFYDEVICESETTINGS pCallback, void *pUserContext) {
-    GetAppState()->SetModifyDeviceSettingsFunc(pCallback);
-    GetAppState()->SetModifyDeviceSettingsFuncUserContext(pUserContext);
+  void WINAPI AppSetCallbackDeviceChanging(LPAPPCTXCALLBACKMODIFYDEVICESETTINGS pCallback, void *pUserContext) {
+    GetAppCtx()->SetModifyDeviceSettingsFunc(pCallback);
+    GetAppCtx()->SetModifyDeviceSettingsFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackDeviceRemoved(LPAPPSTATECALLBACKDEVICEREMOVED pCallback, void *pUserContext) {
-    GetAppState()->SetDeviceRemovedFunc(pCallback);
-    GetAppState()->SetDeviceRemovedFuncUserContext(pUserContext);
+  void WINAPI AppSetCallbackDeviceRemoved(LPAPPCTXCALLBACKDEVICEREMOVED pCallback, void *pUserContext) {
+    GetAppCtx()->SetDeviceRemovedFunc(pCallback);
+    GetAppCtx()->SetDeviceRemovedFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackFrameMove(LPAPPSTATECALLBACKFRAMEMOVE pCallback, void *pUserContext) {
-    GetAppState()->SetFrameMoveFunc(pCallback);
-    GetAppState()->SetFrameMoveFuncUserContext(pUserContext);
+  void WINAPI AppSetCallbackFrameMove(LPAPPCTXCALLBACKFRAMEMOVE pCallback, void *pUserContext) {
+    GetAppCtx()->SetFrameMoveFunc(pCallback);
+    GetAppCtx()->SetFrameMoveFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackKeyboard(LPAPPSTATECALLBACKKEYBOARD pCallback, void *pUserContext) {
-    GetAppState()->SetKeyboardFunc(pCallback);
-    GetAppState()->SetKeyboardFuncUserContext(pUserContext);
+  void WINAPI AppSetCallbackKeyboard(LPAPPCTXCALLBACKKEYBOARD pCallback, void *pUserContext) {
+    GetAppCtx()->SetKeyboardFunc(pCallback);
+    GetAppCtx()->SetKeyboardFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackMouse(LPAPPSTATECALLBACKMOUSE pCallback, bool bIncludeMouseMove, void *pUserContext) {
-    GetAppState()->SetMouseFunc(pCallback);
-    GetAppState()->SetNotifyOnMouseMove(bIncludeMouseMove);
-    GetAppState()->SetMouseFuncUserContext(pUserContext);
+  void WINAPI AppSetCallbackMouse(LPAPPCTXCALLBACKMOUSE pCallback, bool bIncludeMouseMove, void *pUserContext) {
+    GetAppCtx()->SetMouseFunc(pCallback);
+    GetAppCtx()->SetNotifyOnMouseMove(bIncludeMouseMove);
+    GetAppCtx()->SetMouseFuncUserContext(pUserContext);
   }
-  void WINAPI AppSetCallbackMsgProc(LPAPPSTATECALLBACKMSGPROC pCallback, void *pUserContext) {
-    GetAppState()->SetWindowMsgFunc(pCallback);
-    GetAppState()->SetWindowMsgFuncUserContext(pUserContext);
+  void WINAPI AppSetCallbackMsgProc(LPAPPCTXCALLBACKMSGPROC pCallback, void *pUserContext) {
+    GetAppCtx()->SetWindowMsgFunc(pCallback);
+    GetAppCtx()->SetWindowMsgFuncUserContext(pUserContext);
   }
 };
 

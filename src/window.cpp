@@ -12,102 +12,113 @@ HRESULT WINAPI AppCreateWindow(
 )
 {
   HRESULT  hr = 0;
-  AppState *appState = GetAppState();
+  AppCtx *appCtx = GetAppCtx();
 
   // Not allowed to call this from inside the device callbacks
-  if (appState->GetInsideDeviceCallback())
-    return DXUT_ERR_MSGBOX(L"AppCreateWindow inside device callback", E_FAIL);
-
-  appState->SetWindowCreateCalled(true);
-
-  if (!appState->GetInited()) {
-    // If AppInit() was already called and failed, then fail.
-    // AppInit() must first succeed for this function to succeed
-    if (appState->GetInitCalled()) {
-      return E_FAIL;
-    }
-    return DXTRACE_ERR_MSGBOX(L"AppCreateWindow called before AppInit. FIXME", E_FAIL);
-
-    // If AppInit() hasn't been called, then automatically call it
-    // with default params
- /* hr = AppInit();
-    if (FAILED(hr)) {
-      return hr;
-    }*/
-  }
-
-  if (appState->GetHWNDFocus() == NULL) {
-    if (hInstance == NULL) {
-      hInstance = static_cast<HINSTANCE>(GetModuleHandle(NULL));
-    }
-    appState->SetHInstance(hInstance);
-
-    // Register the windows class
-    WNDCLASS wndClass = {
-      .style         = CS_HREDRAW | CS_VREDRAW,
-      .lpfnWndProc   = AppWndProc,
-      .cbClsExtra    = 0,
-      .cbWndExtra    = 0,
-      .hInstance     = hInstance,
-      .hIcon         = hIcon,
-      .hCursor       = LoadCursor(NULL, IDC_ARROW),
-      .hbrBackground = NULL,
-      .lpszMenuName  = NULL,
-      .lpszClassName = "Direct3DWindowClass",
-    };
-    if (!RegisterClass(&wndClass)) {
-      DWORD dwError = GetLastError();
-      if (dwError != ERROR_CLASS_ALREADY_EXISTS)
-        return DXUT_ERR_MSGBOX(L"RegisterClass", HRESULT_FROM_WIN32(dwError));
-    }
-
-    // Override the window's initial & size position if there were cmd line args
-    if (appState->GetOverrideStartX() != -1)
-      x = appState->GetOverrideStartX();
-    if (appState->GetOverrideStartY() != -1)
-      y = appState->GetOverrideStartY();
-
-    appState->SetWindowCreatedWithDefaultPositions(false);
-    if (x == CW_USEDEFAULT && y == CW_USEDEFAULT)
-      appState->SetWindowCreatedWithDefaultPositions(true);
-
-    // Find the window's initial size, but it might be changed later
-    int nDefaultWidth  = 640;
-    int nDefaultHeight = 480;
-    if (appState->GetOverrideWidth() != 0)
-      nDefaultWidth = appState->GetOverrideWidth();
-    if (appState->GetOverrideHeight() != 0)
-      nDefaultHeight = appState->GetOverrideHeight();
-
-    RECT rc;
-    SetRect(&rc, 0, 0, nDefaultWidth, nDefaultHeight);
-    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, (hMenu != NULL) ? true : false);
-
-    // Create the render window
-    HWND hWnd = CreateWindowW(
-      L"Direct3DWindowClass",
-      strWindowTitle,
-      WS_OVERLAPPEDWINDOW,
-      x, y,
-      (rc.right  - rc.left),
-      (rc.bottom - rc.top),
-      0,
-      hMenu, hInstance,
-      0
+  if (appCtx->GetInsideDeviceCallback()) {
+    return DXTRACE_ERR_MSGBOX(
+      L"AppCreateWindow inside device callback",
+      E_FAIL
     );
-    if (hWnd == NULL) {
-      DWORD dwError = GetLastError();
-      return DXUT_ERR_MSGBOX(L"CreateWindow", HRESULT_FROM_WIN32(dwError));
-    }
-  
-    appState->SetIsWindowed(true);
-    appState->SetIsFullscreen(false);
-    appState->SetWindowCreated(true);
-    appState->SetHWNDFocus(hWnd);
-    appState->SetHWNDDeviceFullScreen(hWnd);
-    appState->SetHWNDDeviceWindowed(hWnd);
-    appState->SetWindowTitle((WCHAR *)strWindowTitle);
   }
+
+  if (!appCtx->GetInited()) {
+    return DXTRACE_ERR_MSGBOX(
+      L"AppCreateWindow called before AppInit. FIXME",
+      E_FAIL
+    );
+  }
+  if (appCtx->GetWindowCreated()) {
+    return DXTRACE_ERR_MSGBOX(
+      L"AppCreateWindow called with existing window",
+      E_FAIL
+    );
+  }
+  if (appCtx->GetHWNDFocus()) {
+    return DXTRACE_ERR_MSGBOX(
+      L"Existing HWND without window?",
+      E_FAIL
+    );
+  }
+  
+  appCtx->SetWindowCreateCalled(true);
+
+  if (hInstance == NULL) {
+    hInstance = static_cast<HINSTANCE>(GetModuleHandle(NULL));
+  }
+  appCtx->SetHInstance(hInstance);
+
+  // Register the windows class
+  WNDCLASS wndClass = {
+    .style         = CS_HREDRAW | CS_VREDRAW,
+    .lpfnWndProc   = AppWndProc,
+    .cbClsExtra    = 0,
+    .cbWndExtra    = 0,
+    .hInstance     = hInstance,
+    .hIcon         = hIcon,
+    .hCursor       = LoadCursor(NULL, IDC_ARROW),
+    .hbrBackground = NULL,
+    .lpszMenuName  = NULL,
+    .lpszClassName = "Direct3DWindowClass",
+  };
+  if (!RegisterClass(&wndClass)) {
+    DWORD dwError = GetLastError();
+    if (dwError != ERROR_CLASS_ALREADY_EXISTS) {
+      return DXTRACE_ERR_MSGBOX(L"RegisterClass", HRESULT_FROM_WIN32(dwError));
+    }
+  }
+
+  // Override the window's initial & size position if there were cmd line args
+  if (appCtx->GetOverrideStartX() != -1) {
+    x = appCtx->GetOverrideStartX();
+  }
+  if (appCtx->GetOverrideStartY() != -1) {
+    y = appCtx->GetOverrideStartY();
+  }
+
+  appCtx->SetWindowCreatedWithDefaultPositions(false);
+  if (x == CW_USEDEFAULT && y == CW_USEDEFAULT) {
+    appCtx->SetWindowCreatedWithDefaultPositions(true);
+  }
+
+  // Find the window's initial size, but it might be changed later
+  int nDefaultWidth  = 640;
+  int nDefaultHeight = 480;
+  if (appCtx->GetOverrideWidth() != 0) {
+    nDefaultWidth = appCtx->GetOverrideWidth();
+  }
+  if (appCtx->GetOverrideHeight() != 0) {
+    nDefaultHeight = appCtx->GetOverrideHeight();
+  }
+
+  RECT rc;
+  SetRect(&rc, 0, 0, nDefaultWidth, nDefaultHeight);
+  AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, (hMenu != NULL) ? true : false);
+
+  // Create the render window
+  HWND hWnd = CreateWindowW(
+    L"Direct3DWindowClass",
+    strWindowTitle,
+    WS_OVERLAPPEDWINDOW,
+    x, y,
+    (rc.right  - rc.left),
+    (rc.bottom - rc.top),
+    0,
+    hMenu, hInstance,
+    0
+  );
+  if (hWnd == NULL) {
+    DWORD dwError = GetLastError();
+    return DXUT_ERR_MSGBOX(L"CreateWindow", HRESULT_FROM_WIN32(dwError));
+  }
+
+  appCtx->SetIsWindowed(true);
+  appCtx->SetIsFullscreen(false);
+  appCtx->SetWindowCreated(true);
+  appCtx->SetHWNDFocus(hWnd);
+  appCtx->SetHWNDDeviceFullScreen(hWnd);
+  appCtx->SetHWNDDeviceWindowed(hWnd);
+  appCtx->SetWindowTitle((WCHAR *)strWindowTitle);
 
   return S_OK;
 }
@@ -117,7 +128,7 @@ HRESULT WINAPI AppCreateWindow(
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-  AppState *appState = GetAppState();
+  AppCtx *appCtx = GetAppCtx();
 
   // Consolidate the keyboard messages and pass them to the app's keyboard callback
   if (uMsg == WM_KEYDOWN || uMsg == WM_SYSKEYDOWN || uMsg == WM_KEYUP || uMsg == WM_SYSKEYUP) {
@@ -125,12 +136,12 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     DWORD dwMask  = (1 << 29);
     bool bAltDown = ((lParam & dwMask) != 0);
 
-    bool* bKeys = appState->GetKeys();
+    bool* bKeys = appCtx->GetKeys();
     bKeys[(BYTE)(wParam & 0xFF)] = bKeyDown;
 
-    LPAPPSTATECALLBACKKEYBOARD pCallbackKeyboard = appState->GetKeyboardFunc();
+    LPAPPCTXCALLBACKKEYBOARD pCallbackKeyboard = appCtx->GetKeyboardFunc();
     if (pCallbackKeyboard)
-      pCallbackKeyboard((UINT)wParam, bKeyDown, bAltDown, appState->GetKeyboardFuncUserContext());
+      pCallbackKeyboard((UINT)wParam, bKeyDown, bAltDown, appCtx->GetKeyboardFuncUserContext());
   }
 
   // Consolidate the mouse button messages and pass them to the app's mouse callback
@@ -140,7 +151,7 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       uMsg == WM_RBUTTONDOWN   || uMsg == WM_RBUTTONUP     ||
       uMsg == WM_RBUTTONDBLCLK || uMsg == WM_XBUTTONDOWN   ||
       uMsg == WM_XBUTTONUP     || uMsg == WM_XBUTTONDBLCLK ||
-      uMsg == WM_MOUSEWHEEL    || (appState->GetNotifyOnMouseMove() && uMsg == WM_MOUSEMOVE)
+      uMsg == WM_MOUSEWHEEL    || (appCtx->GetNotifyOnMouseMove() && uMsg == WM_MOUSEMOVE)
   )
   {
       int xPos = (short)LOWORD(lParam);
@@ -168,26 +179,26 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       bool bSideButton1  = ((nMouseButtonState & MK_XBUTTON1) != 0);
       bool bSideButton2  = ((nMouseButtonState & MK_XBUTTON2) != 0);
 
-      bool* bMouseButtons = appState->GetMouseButtons();
+      bool* bMouseButtons = appCtx->GetMouseButtons();
       bMouseButtons[0]    = bLeftButton;
       bMouseButtons[1]    = bMiddleButton;
       bMouseButtons[2]    = bRightButton;
       bMouseButtons[3]    = bSideButton1;
       bMouseButtons[4]    = bSideButton2;
 
-      LPAPPSTATECALLBACKMOUSE pCallbackMouse = appState->GetMouseFunc();
+      LPAPPCTXCALLBACKMOUSE pCallbackMouse = appCtx->GetMouseFunc();
       if (pCallbackMouse)
         pCallbackMouse(bLeftButton, bRightButton, bMiddleButton, bSideButton1, bSideButton2, nMouseWheelDelta,
-          xPos, yPos, appState->GetMouseFuncUserContext());
+          xPos, yPos, appCtx->GetMouseFuncUserContext());
   }
 
   // Pass all messages to the app's MsgProc callback, and don't
   // process further messages if the apps says not to.
-  LPAPPSTATECALLBACKMSGPROC pCallbackMsgProc = appState->GetWindowMsgFunc();
+  LPAPPCTXCALLBACKMSGPROC pCallbackMsgProc = appCtx->GetWindowMsgFunc();
   if (pCallbackMsgProc) {
     bool bNoFurtherProcessing = false;
     LRESULT nResult = pCallbackMsgProc(hWnd, uMsg, wParam, lParam, &bNoFurtherProcessing,
-      appState->GetWindowMsgFuncUserContext());
+      appCtx->GetWindowMsgFuncUserContext());
     if (bNoFurtherProcessing)
       return nResult;
   }
@@ -195,21 +206,21 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   switch (uMsg) {
     case WM_PAINT: {
       // Handle paint messages when the app is paused
-      if (appState->GetIsRenderingPaused() && appState->GetDeviceObjectsCreated() && appState->GetDeviceObjectsReset()) {
+      if (appCtx->GetIsRenderingPaused() && appCtx->GetDeviceObjectsCreated() && appCtx->GetDeviceObjectsReset()) {
         HRESULT hr;
-        double fTime = appState->GetTime();
-        float fElapsedTime = appState->GetElapsedTime();
+        double fTime = appCtx->GetTime();
+        float fElapsedTime = appCtx->GetElapsedTime();
 
-        IDirect3DDevice9* pd3dDevice = appState->GetD3D9Device();
+        IDirect3DDevice9* pd3dDevice = appCtx->GetD3D9Device();
         if (pd3dDevice) {
-          LPAPPSTATECALLBACKD3D9FRAMERENDER pCallbackFrameRender = appState->GetD3D9FrameRenderFunc();
+          LPAPPCTXCALLBACKD3D9FRAMERENDER pCallbackFrameRender = appCtx->GetD3D9FrameRenderFunc();
           if (pCallbackFrameRender != NULL)
             pCallbackFrameRender(pd3dDevice, fTime, fElapsedTime,
-              appState->GetD3D9FrameRenderFuncUserContext());
+              appCtx->GetD3D9FrameRenderFuncUserContext());
 
           hr = pd3dDevice->Present(NULL, NULL, NULL, NULL);
           if (D3DERR_DEVICELOST == hr) {
-            appState->SetDeviceLost(true);
+            appCtx->SetDeviceLost(true);
           } else if (D3DERR_DRIVERINTERNALERROR == hr) {
             // When D3DERR_DRIVERINTERNALERROR is returned from Present(),
             // the application can do one of the following:
@@ -225,7 +236,7 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             //
             // The framework attempts the path of resetting the device
             //
-            appState->SetDeviceLost(true);
+            appCtx->SetDeviceLost(true);
           }
         }
       }
@@ -237,35 +248,35 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       if (SIZE_MINIMIZED == wParam) {
         AppPause(true, true); // Pause while we're minimized
 
-        appState->SetMinimized(true);
-        appState->SetMaximized(false);
+        appCtx->SetMinimized(true);
+        appCtx->SetMaximized(false);
       } else {
         RECT rcCurrentClient;
-        GetClientRect(appState->GetHWNDFocus(), &rcCurrentClient);
+        GetClientRect(appCtx->GetHWNDFocus(), &rcCurrentClient);
         if (rcCurrentClient.top == 0 && rcCurrentClient.bottom == 0) {
           // Rapidly clicking the task bar to minimize and restore a window
           // can cause a WM_SIZE message with SIZE_RESTORED when
           // the window has actually become minimized due to rapid change
           // so just ignore this message
         } else if (SIZE_MAXIMIZED == wParam) {
-          if (appState->GetMinimized())
+          if (appCtx->GetMinimized())
             AppPause(false, false); // Unpause since we're no longer minimized
-          appState->SetMinimized(false);
-          appState->SetMaximized(true);
+          appCtx->SetMinimized(false);
+          appCtx->SetMaximized(true);
           CheckForWindowSizeChange();
           CheckForWindowChangingMonitors();
         } else if (SIZE_RESTORED == wParam) {
           // DXUTCheckForDXGIFullScreenSwitch();
-          if (appState->GetMaximized()) {
-            appState->SetMaximized(false);
+          if (appCtx->GetMaximized()) {
+            appCtx->SetMaximized(false);
             CheckForWindowSizeChange();
             CheckForWindowChangingMonitors();
-          } else if (appState->GetMinimized()) {
+          } else if (appCtx->GetMinimized()) {
             AppPause(false, false); // Unpause since we're no longer minimized
-            appState->SetMinimized(false);
+            appCtx->SetMinimized(false);
             CheckForWindowSizeChange();
             CheckForWindowChangingMonitors();
-          } else if (appState->GetInSizeMove()) {
+          } else if (appCtx->GetInSizeMove()) {
             // If we're neither maximized nor minimized, the window size
             // is changing by the user dragging the window edges.  In this
             // case, we don't reset the device yet -- we wait until the
@@ -291,7 +302,7 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_ENTERSIZEMOVE: {
       // Halt frame movement while the app is sizing or moving
       AppPause(true, true);
-      appState->SetInSizeMove(true);
+      appCtx->SetInSizeMove(true);
       break;
     }
 
@@ -299,13 +310,13 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       AppPause(false, false);
       CheckForWindowSizeChange();
       CheckForWindowChangingMonitors();
-      appState->SetInSizeMove(false);
+      appCtx->SetInSizeMove(false);
       break;
     }
 
     case WM_MOUSEMOVE: {
-      if (appState->GetIsActive() && !appState->GetIsWindowed()) {
-        IDirect3DDevice9* pd3dDevice = appState->GetD3D9Device();
+      if (appCtx->GetIsActive() && !appCtx->GetIsWindowed()) {
+        IDirect3DDevice9* pd3dDevice = appCtx->GetD3D9Device();
         if (pd3dDevice) {
           POINT ptCursor;
           GetCursorPos(&ptCursor);
@@ -316,9 +327,9 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
 
     case WM_SETCURSOR: {
-      if (appState->GetIsActive() && !appState->GetIsWindowed()) {
-        IDirect3DDevice9* pd3dDevice = appState->GetD3D9Device();
-        if (pd3dDevice && appState->GetShowCursorWhenFullScreen())
+      if (appCtx->GetIsActive() && !appCtx->GetIsWindowed()) {
+        IDirect3DDevice9* pd3dDevice = appCtx->GetD3D9Device();
+        if (pd3dDevice && appCtx->GetShowCursorWhenFullScreen())
           pd3dDevice->ShowCursor(true);
         return true; // prevent Windows from setting cursor to window class cursor
       }
@@ -332,7 +343,7 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       case SC_SIZE:
       case SC_MAXIMIZE:
       case SC_KEYMENU:
-        if (!appState->GetIsWindowed())
+        if (!appCtx->GetIsWindowed())
           return 0;
         break;
       }
@@ -343,7 +354,7 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       switch (wParam) {
         case VK_RETURN: {
           // TODO: Enable fullscreen swap
-          //if (appState->GetHandleAltEnter()) {
+          //if (appCtx->GetHandleAltEnter()) {
           //  // Toggle full screen upon alt-enter
           //  DWORD dwMask = (1 << 29);
           //  if ((lParam & dwMask) != 0) // Alt is down also
@@ -364,7 +375,7 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_KEYDOWN: {
       switch (wParam) {
         case VK_ESCAPE: {
-          if (appState->GetHandleEscape()) {
+          if (appCtx->GetHandleEscape()) {
             SendMessage(hWnd, WM_CLOSE, 0, 0);
           }
           break;
@@ -381,13 +392,13 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       }
       DestroyWindow(hWnd);
       UnregisterClassW(L"Direct3DWindowClass", NULL);
-      appState->SetIsWindowed(false);
-      appState->SetIsFullscreen(false);
-      appState->SetWindowCreated(false);
-      appState->SetHWNDFocus(NULL);
-      appState->SetHWNDDeviceFullScreen(NULL);
-      appState->SetHWNDDeviceWindowed(NULL);
-      appState->SetWindowTitle((WCHAR *)L"Destroyed");
+      appCtx->SetIsWindowed(false);
+      appCtx->SetIsFullscreen(false);
+      appCtx->SetWindowCreated(false);
+      appCtx->SetHWNDFocus(NULL);
+      appCtx->SetHWNDDeviceFullScreen(NULL);
+      appCtx->SetHWNDDeviceWindowed(NULL);
+      appCtx->SetWindowTitle((WCHAR *)L"Destroyed");
       return 0;
     }
 
