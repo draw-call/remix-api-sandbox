@@ -3,116 +3,86 @@
 #include <Windows.h>
 #include <assert.h>
 
+
 //--------------------------------------------------------------------------------------
 // A growable array
 //--------------------------------------------------------------------------------------
-template <typename TYPE>
-class CGrowableArray {
+template <typename TYPE> class CGrowableArray
+{
 public:
-  CGrowableArray()
-  {
-    m_pData = NULL;
-    m_nSize = 0;
+  CGrowableArray() {
+    m_pData    = NULL;
+    m_nSize    = 0;
     m_nMaxSize = 0;
   }
-  CGrowableArray(const CGrowableArray<TYPE>& a)
-  {
-    for (int i = 0; i < a.m_nSize; i++)
+  CGrowableArray(const CGrowableArray<TYPE> &a) {
+    for (int i = 0; i < a.m_nSize; i++) {
       Add(a.m_pData[i]);
+    }
   }
-  ~CGrowableArray()
-  {
-    RemoveAll();
-  }
+  ~CGrowableArray() { RemoveAll(); }
 
-  const TYPE& operator[](int nIndex) const
-  {
-    return GetAt(nIndex);
-  }
-  TYPE& operator[](int nIndex)
-  {
-    return GetAt(nIndex);
-  }
+  const TYPE &operator[](int nIndex) const { return GetAt(nIndex); }
+  TYPE &operator[](int nIndex)             { return GetAt(nIndex); }
 
-  CGrowableArray& operator=(const CGrowableArray<TYPE>& a)
-  {
-    if (this == &a)
+  CGrowableArray &operator=(const CGrowableArray<TYPE> &a) {
+    if (this == &a) {
       return *this;
+    }
     RemoveAll();
-    for (int i = 0; i < a.m_nSize;
-       i++)
+    for (int i = 0; i < a.m_nSize; i++) {
       Add(a.m_pData[i]);
+    }
     return *this;
   }
 
   HRESULT SetSize(int nNewMaxSize);
-  HRESULT Add(const TYPE& value);
-  HRESULT Insert(int nIndex, const TYPE& value);
-  HRESULT SetAt(int nIndex, const TYPE& value);
-  TYPE& GetAt(int nIndex) const
-  {
+  HRESULT Add(const TYPE &value);
+  HRESULT Insert(int nIndex, const TYPE &value);
+  HRESULT SetAt(int nIndex, const TYPE &value);
+  TYPE &GetAt(int nIndex) const {
     assert(nIndex >= 0 && nIndex < m_nSize);
     return m_pData[nIndex];
   }
-  int GetSize() const
-  {
-    return m_nSize;
-  }
-  TYPE* GetData()
-  {
-    return m_pData;
-  }
-  bool Contains(const TYPE& value)
-  {
-    return (-1 != IndexOf(value));
-  }
+  int GetSize() const { return m_nSize; }
+  TYPE *GetData()     { return m_pData; }
+  bool Contains(const TYPE &value) { return (-1 != IndexOf(value)); }
 
-  int IndexOf(const TYPE& value)
-  {
+  int IndexOf(const TYPE &value, int nIndex, int nNumElements);
+  int IndexOf(const TYPE &value) {
     return (m_nSize > 0) ? IndexOf(value, 0, m_nSize) : -1;
   }
-  int IndexOf(const TYPE& value, int iStart)
-  {
+  int IndexOf(const TYPE &value, int iStart) {
     return IndexOf(value, iStart, m_nSize - iStart);
   }
-  int IndexOf(const TYPE& value, int nIndex, int nNumElements);
 
-  int LastIndexOf(const TYPE& value)
-  {
+  int LastIndexOf(const TYPE &value, int nIndex, int nNumElements);
+  int LastIndexOf(const TYPE &value) {
     return (m_nSize > 0) ? LastIndexOf(value, m_nSize - 1, m_nSize) : -1;
   }
-  int LastIndexOf(const TYPE& value, int nIndex)
-  {
+  int LastIndexOf(const TYPE &value, int nIndex) {
     return LastIndexOf(value, nIndex, nIndex + 1);
   }
-  int LastIndexOf(const TYPE& value, int nIndex, int nNumElements);
 
   HRESULT Remove(int nIndex);
-  void RemoveAll()
-  {
-    SetSize(0);
-  }
-  void Reset()
-  {
-    m_nSize = 0;
-  }
+  void RemoveAll() { SetSize(0); }
+  void Reset()     { m_nSize = 0; }
 
 protected:
-  TYPE* m_pData; // the actual array of data
-  int m_nSize; // # of elements (upperBound - 1)
-  int m_nMaxSize; // max allocated
+  TYPE *m_pData;    // the actual array of data
+  int   m_nSize;    // # of elements (upperBound - 1)
+  int   m_nMaxSize; // max allocated
 
-  HRESULT SetSizeInternal(int nNewMaxSize); // This version doesn't call ctor or dtor.
+  HRESULT
+  SetSizeInternal(int nNewMaxSize); // This version doesn't call ctor or dtor.
 };
 
 //--------------------------------------------------------------------------------------
 // Implementation of CGrowableArray
 //--------------------------------------------------------------------------------------
 
-// This version doesn't call ctor or dtor.
 template <typename TYPE>
-HRESULT CGrowableArray<TYPE>::SetSizeInternal(int nNewMaxSize)
-{
+HRESULT CGrowableArray <TYPE>::SetSizeInternal(int nNewMaxSize) {
   if (nNewMaxSize < 0 || (nNewMaxSize > INT_MAX / sizeof(TYPE))) {
     assert(false);
     return E_INVALIDARG;
@@ -137,11 +107,12 @@ HRESULT CGrowableArray<TYPE>::SetSizeInternal(int nNewMaxSize)
 
     nNewMaxSize = __max(nNewMaxSize, m_nMaxSize + nGrowBy);
 
-    // Verify that (nNewMaxSize * sizeof(TYPE)) is not greater than UINT_MAX or the realloc will overrun
+    // Verify that (nNewMaxSize * sizeof(TYPE)) is not greater than UINT_MAX or
+    // the realloc will overrun
     if (sizeof(TYPE) > UINT_MAX / (UINT)nNewMaxSize)
       return E_INVALIDARG;
 
-    TYPE* pDataNew = (TYPE*)realloc(m_pData, nNewMaxSize * sizeof(TYPE));
+    TYPE *pDataNew = (TYPE *)realloc(m_pData, nNewMaxSize * sizeof(TYPE));
     if (pDataNew == NULL)
       return E_OUTOFMEMORY;
 
@@ -154,15 +125,13 @@ HRESULT CGrowableArray<TYPE>::SetSizeInternal(int nNewMaxSize)
 
 //--------------------------------------------------------------------------------------
 template <typename TYPE>
-HRESULT CGrowableArray<TYPE>::SetSize(int nNewMaxSize)
-{
+HRESULT CGrowableArray<TYPE>::SetSize(int nNewMaxSize) {
   int nOldSize = m_nSize;
 
   if (nOldSize > nNewMaxSize) {
     assert(m_pData);
     if (m_pData) {
       // Removing elements. Call dtor.
-
       for (int i = nNewMaxSize; i < nOldSize; ++i)
         m_pData[i].~TYPE();
     }
@@ -178,7 +147,7 @@ HRESULT CGrowableArray<TYPE>::SetSize(int nNewMaxSize)
       // Adding elements. Call ctor.
 
       for (int i = nOldSize; i < nNewMaxSize; ++i)
-        ::new (&m_pData[i]) TYPE;
+        m_pData[i] = *(new TYPE);
     }
   }
 
@@ -187,8 +156,7 @@ HRESULT CGrowableArray<TYPE>::SetSize(int nNewMaxSize)
 
 //--------------------------------------------------------------------------------------
 template <typename TYPE>
-HRESULT CGrowableArray<TYPE>::Add(const TYPE& value)
-{
+HRESULT CGrowableArray<TYPE>::Add(const TYPE &value) {
   HRESULT hr;
   if (FAILED(hr = SetSizeInternal(m_nSize + 1)))
     return hr;
@@ -196,7 +164,7 @@ HRESULT CGrowableArray<TYPE>::Add(const TYPE& value)
   assert(m_pData != NULL);
 
   // Construct the new element
-  ::new (&m_pData[m_nSize]) TYPE;
+  m_pData[m_nSize] = *(new TYPE);
 
   // Assign
   m_pData[m_nSize] = value;
@@ -207,8 +175,7 @@ HRESULT CGrowableArray<TYPE>::Add(const TYPE& value)
 
 //--------------------------------------------------------------------------------------
 template <typename TYPE>
-HRESULT CGrowableArray<TYPE>::Insert(int nIndex, const TYPE& value)
-{
+HRESULT CGrowableArray<TYPE>::Insert(int nIndex, const TYPE &value) {
   HRESULT hr;
 
   // Validate index
@@ -222,10 +189,11 @@ HRESULT CGrowableArray<TYPE>::Insert(int nIndex, const TYPE& value)
     return hr;
 
   // Shift the array
-  MoveMemory(&m_pData[nIndex + 1], &m_pData[nIndex], sizeof(TYPE) * (m_nSize - nIndex));
+  MoveMemory(&m_pData[nIndex + 1], &m_pData[nIndex],
+             sizeof(TYPE) * (m_nSize - nIndex));
 
   // Construct the new element
-  ::new (&m_pData[nIndex]) TYPE;
+  m_pData[nIndex] = *(new TYPE);
 
   // Set the value and increase the size
   m_pData[nIndex] = value;
@@ -236,8 +204,7 @@ HRESULT CGrowableArray<TYPE>::Insert(int nIndex, const TYPE& value)
 
 //--------------------------------------------------------------------------------------
 template <typename TYPE>
-HRESULT CGrowableArray<TYPE>::SetAt(int nIndex, const TYPE& value)
-{
+HRESULT CGrowableArray<TYPE>::SetAt(int nIndex, const TYPE &value) {
   // Validate arguments
   if (nIndex < 0 || nIndex >= m_nSize) {
     assert(false);
@@ -249,16 +216,17 @@ HRESULT CGrowableArray<TYPE>::SetAt(int nIndex, const TYPE& value)
 }
 
 //--------------------------------------------------------------------------------------
-// Searches for the specified value and returns the index of the first occurrence
-// within the section of the data array that extends from iStart and contains the
-// specified number of elements. Returns -1 if value is not found within the given
-// section.
+// Searches for the specified value and returns the index of the first
+// occurrence within the section of the data array that extends from iStart and
+// contains the specified number of elements. Returns -1 if value is not found
+// within the given section.
 //--------------------------------------------------------------------------------------
 template <typename TYPE>
-int CGrowableArray<TYPE>::IndexOf(const TYPE& value, int iStart, int nNumElements)
-{
+int CGrowableArray<TYPE>::IndexOf(const TYPE &value, int iStart,
+                                  int nNumElements) {
   // Validate arguments
-  if (iStart < 0 || iStart >= m_nSize || nNumElements < 0 || iStart + nNumElements > m_nSize) {
+  if (iStart < 0 || iStart >= m_nSize || nNumElements < 0 ||
+      iStart + nNumElements > m_nSize) {
     assert(false);
     return -1;
   }
@@ -275,14 +243,16 @@ int CGrowableArray<TYPE>::IndexOf(const TYPE& value, int iStart, int nNumElement
 
 //--------------------------------------------------------------------------------------
 // Searches for the specified value and returns the index of the last occurrence
-// within the section of the data array that contains the specified number of elements
-// and ends at iEnd. Returns -1 if value is not found within the given section.
+// within the section of the data array that contains the specified number of
+// elements and ends at iEnd. Returns -1 if value is not found within the given
+// section.
 //--------------------------------------------------------------------------------------
 template <typename TYPE>
-int CGrowableArray<TYPE>::LastIndexOf(const TYPE& value, int iEnd, int nNumElements)
-{
+int CGrowableArray<TYPE>::LastIndexOf(const TYPE &value, int iEnd,
+                                      int nNumElements) {
   // Validate arguments
-  if (iEnd < 0 || iEnd >= m_nSize || nNumElements < 0 || iEnd - nNumElements < 0) {
+  if (iEnd < 0 || iEnd >= m_nSize || nNumElements < 0 ||
+      iEnd - nNumElements < 0) {
     assert(false);
     return -1;
   }
@@ -298,9 +268,7 @@ int CGrowableArray<TYPE>::LastIndexOf(const TYPE& value, int iEnd, int nNumEleme
 }
 
 //--------------------------------------------------------------------------------------
-template <typename TYPE>
-HRESULT CGrowableArray<TYPE>::Remove(int nIndex)
-{
+template <typename TYPE> HRESULT CGrowableArray<TYPE>::Remove(int nIndex) {
   if (nIndex < 0 || nIndex >= m_nSize) {
     assert(false);
     return E_INVALIDARG;
@@ -310,8 +278,10 @@ HRESULT CGrowableArray<TYPE>::Remove(int nIndex)
   m_pData[nIndex].~TYPE();
 
   // Compact the array and decrease the size
-  MoveMemory(&m_pData[nIndex], &m_pData[nIndex + 1], sizeof(TYPE) * (m_nSize - (nIndex + 1)));
+  MoveMemory(&m_pData[nIndex], &m_pData[nIndex + 1],
+             sizeof(TYPE) * (m_nSize - (nIndex + 1)));
   --m_nSize;
 
   return S_OK;
 }
+

@@ -5,6 +5,7 @@
 // and resource management for material textures.
 //
 // Copyright (c) Microsoft Corporation.
+// Copyright (c) Dayton Pidhirney.
 // Licensed under the MIT License (MIT).
 //--------------------------------------------------------------------------------------
 #pragma once
@@ -13,6 +14,11 @@
 #include <d3dx9.h>
 
 #include "cgarray.hpp"
+
+class VERTEX;
+class CacheEntry;
+class Material;
+class CMeshLoader;
 
 // Vertex format
 struct VERTEX {
@@ -74,10 +80,10 @@ public:
 private:
   HRESULT LoadGeometryFromOBJ(std::filesystem::path  &objfilepath);
   HRESULT LoadMaterialsFromMTL(std::filesystem::path &mtlfilepath);
-  void InitMaterial(Material* pMaterial);
 
   DWORD AddVertex(UINT hash, VERTEX* pVertex);
-  void DeleteCache();
+  void  DeleteCache();
+  void  InitMaterial(Material* pMaterial);
 
   IDirect3DDevice9* m_pd3dDevice; // Direct3D Device object associated with this mesh
   ID3DXMesh* m_pMesh;             // Encapsulated D3DX Mesh

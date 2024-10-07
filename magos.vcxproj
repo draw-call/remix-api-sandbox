@@ -181,8 +181,13 @@
     <ClCompile Include="bridge-remix\src\util\util_sharedheap.cpp" />
     <ClCompile Include="bridge-remix\src\util\util_sharedmemory.cpp" />
     <ClCompile Include="src\app.cpp" />
+    <ClCompile Include="src\device.cpp" />
     <ClCompile Include="src\dxerror.cpp" />
     <ClCompile Include="src\meshloader.cpp" />
+    <ClCompile Include="src\scraps.cpp" />
+    <ClCompile Include="src\state.cpp" />
+    <ClCompile Include="src\timer.cpp" />
+    <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bridge-remix\src\client\base.h" />
@@ -258,14 +263,19 @@
     <ClInclude Include="bridge-remix\src\util\util_singleton.h" />
     <ClInclude Include="bridge-remix\src\util\util_texture_and_volume.h" />
     <ClInclude Include="bridge-remix\src\util\util_version.h" />
-    <ClInclude Include="include\app.h" />
+    <ClInclude Include="include\app_remix.hpp" />
     <ClInclude Include="include\cgarray.hpp" />
+    <ClInclude Include="include\device.hpp" />
     <ClInclude Include="include\dxerror.hpp" />
     <ClInclude Include="include\dxvkcom.h" />
     <ClInclude Include="include\meshloader.hpp" />
     <ClInclude Include="include\remixapi\bridge_remix_api.h" />
     <ClInclude Include="include\remix\remix.h" />
     <ClInclude Include="include\remix\remix_c.h" />
+    <ClInclude Include="include\state.hpp" />
+    <ClInclude Include="include\statecb.hpp" />
+    <ClInclude Include="include\timer.hpp" />
+    <ClInclude Include="include\window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bridge-remix\src\client\d3d9_lss.def" />

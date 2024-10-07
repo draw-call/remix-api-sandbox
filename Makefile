@@ -20,10 +20,14 @@ LOCAL_GAME_DIR      = $(CURDIR)\game
 !ENDIF
 
 CFLAGS   = -I "$(LOCAL_INCLUDE_DIR)" -I "$(DXSDK_DIR)\include" /Zi
-CPPFLAGS = $(CFLAGS) /EHsc /std:c++latest
+CPPFLAGS = $(CFLAGS) /EHsc /std:c++20
 LFLAGS   = user32.lib /link /LIBPATH:"$(DXSDK_DIR)\Lib\x86"
 
 APP_OBJ_TARGETS = \
+  $(LOCAL_SOURCE_DIR)\state.obj \
+  $(LOCAL_SOURCE_DIR)\timer.obj \
+  $(LOCAL_SOURCE_DIR)\window.obj \
+  $(LOCAL_SOURCE_DIR)\device.obj \
   $(LOCAL_SOURCE_DIR)\dxerror.obj \
   $(LOCAL_SOURCE_DIR)\meshloader.obj
 

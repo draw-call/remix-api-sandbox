@@ -1,9 +1,9 @@
 #pragma once
-#ifndef _MAGOS_DXERROR_H_
-#define _MAGOS_DXERROR_H_
 
 #include <Windows.h>
 #include <stdbool.h>
+
+#define DEBUG
 
 // ---- Prototypes ----
 HRESULT DXTrace  (const WCHAR* strFile, WORD dwLine, HRESULT hr, const WCHAR* strMsg, bool bPopMsgBox);
@@ -90,4 +90,3 @@ VOID WINAPI DXUTOutputDebugStringW(LPCWSTR strMsg, ...);
   case HRESULT_FROM_WIN32b(hrchk): \
     return L##strOut;
 
-#endif _MAGOS_DXERROR_H_
