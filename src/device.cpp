@@ -44,7 +44,7 @@ CD3D9Enumeration::CD3D9Enumeration(IDirect3D9 *d3d9Context, bool doEnumeration)
   m_IsD3D9DeviceAcceptableFunc             = NULL;
   m_pIsD3D9DeviceAcceptableFuncUserContext = NULL;
 
-  SetResolutionMinMax(640, 480, UINT_MAX, UINT_MAX);
+  SetResolutionMinMax(1024, 768, UINT_MAX, UINT_MAX);
   SetRefreshMinMax(0, UINT_MAX);
   SetMultisampleQualityMax(0xFFFF);
   SetPossibleVertexProcessingList(true, true, true, false);

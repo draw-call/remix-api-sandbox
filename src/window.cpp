@@ -82,8 +82,8 @@ HRESULT WINAPI AppCreateWindow(
   }
 
   // Find the window's initial size, but it might be changed later
-  int nDefaultWidth  = 640;
-  int nDefaultHeight = 480;
+  int nDefaultWidth  = 1024;
+  int nDefaultHeight = 760;
   if (appCtx->GetOverrideWidth() != 0) {
     nDefaultWidth = appCtx->GetOverrideWidth();
   }
@@ -109,7 +109,7 @@ HRESULT WINAPI AppCreateWindow(
   );
   if (hWnd == NULL) {
     DWORD dwError = GetLastError();
-    return DXUT_ERR_MSGBOX(L"CreateWindow", HRESULT_FROM_WIN32(dwError));
+    return DXTRACE_ERR_MSGBOX(L"CreateWindow", HRESULT_FROM_WIN32(dwError));
   }
 
   appCtx->SetIsWindowed(true);
@@ -154,42 +154,52 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       uMsg == WM_MOUSEWHEEL    || (appCtx->GetNotifyOnMouseMove() && uMsg == WM_MOUSEMOVE)
   )
   {
-      int xPos = (short)LOWORD(lParam);
-      int yPos = (short)HIWORD(lParam);
+    int xPos = (short)LOWORD(lParam);
+    int yPos = (short)HIWORD(lParam);
 
-      if (uMsg == WM_MOUSEWHEEL) {
-        // WM_MOUSEWHEEL passes screen mouse coords
-        // so convert them to client coords
-        POINT pt {};
-        pt.x = xPos;
-        pt.y = yPos;
-        ScreenToClient(hWnd, &pt);
-        xPos = pt.x;
-        yPos = pt.y;
-      }
+    if (uMsg == WM_MOUSEWHEEL) {
+      // WM_MOUSEWHEEL passes screen mouse coords
+      // so convert them to client coords
+      POINT pt {};
+      pt.x = xPos;
+      pt.y = yPos;
+      ScreenToClient(hWnd, &pt);
+      xPos = pt.x;
+      yPos = pt.y;
+    }
 
-      int nMouseWheelDelta = 0;
-      if (uMsg == WM_MOUSEWHEEL)
-        nMouseWheelDelta = (short)HIWORD(wParam);
+    int nMouseWheelDelta = 0;
+    if (uMsg == WM_MOUSEWHEEL) {
+      nMouseWheelDelta = (short)HIWORD(wParam);
+    }
 
-      int nMouseButtonState = LOWORD(wParam);
-      bool bLeftButton   = ((nMouseButtonState & MK_LBUTTON)  != 0);
-      bool bRightButton  = ((nMouseButtonState & MK_RBUTTON)  != 0);
-      bool bMiddleButton = ((nMouseButtonState & MK_MBUTTON)  != 0);
-      bool bSideButton1  = ((nMouseButtonState & MK_XBUTTON1) != 0);
-      bool bSideButton2  = ((nMouseButtonState & MK_XBUTTON2) != 0);
+    int nMouseButtonState = LOWORD(wParam);
+    bool bLeftButton   = ((nMouseButtonState & MK_LBUTTON)  != 0);
+    bool bRightButton  = ((nMouseButtonState & MK_RBUTTON)  != 0);
+    bool bMiddleButton = ((nMouseButtonState & MK_MBUTTON)  != 0);
+    bool bSideButton1  = ((nMouseButtonState & MK_XBUTTON1) != 0);
+    bool bSideButton2  = ((nMouseButtonState & MK_XBUTTON2) != 0);
 
-      bool* bMouseButtons = appCtx->GetMouseButtons();
-      bMouseButtons[0]    = bLeftButton;
-      bMouseButtons[1]    = bMiddleButton;
-      bMouseButtons[2]    = bRightButton;
-      bMouseButtons[3]    = bSideButton1;
-      bMouseButtons[4]    = bSideButton2;
+    bool* bMouseButtons = appCtx->GetMouseButtons();
+    bMouseButtons[0]    = bLeftButton;
+    bMouseButtons[1]    = bMiddleButton;
+    bMouseButtons[2]    = bRightButton;
+    bMouseButtons[3]    = bSideButton1;
+    bMouseButtons[4]    = bSideButton2;
 
-      LPAPPCTXCALLBACKMOUSE pCallbackMouse = appCtx->GetMouseFunc();
-      if (pCallbackMouse)
-        pCallbackMouse(bLeftButton, bRightButton, bMiddleButton, bSideButton1, bSideButton2, nMouseWheelDelta,
-          xPos, yPos, appCtx->GetMouseFuncUserContext());
+    LPAPPCTXCALLBACKMOUSE pCallbackMouse = appCtx->GetMouseFunc();
+    if (pCallbackMouse) {
+      pCallbackMouse(
+        bLeftButton,
+        bRightButton,
+        bMiddleButton,
+        bSideButton1,
+        bSideButton2,
+        nMouseWheelDelta,
+        xPos, yPos,
+        appCtx->GetMouseFuncUserContext()
+      );
+    }
   }
 
   // Pass all messages to the app's MsgProc callback, and don't
@@ -294,8 +304,8 @@ LRESULT CALLBACK AppWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case WM_GETMINMAXINFO: {
       // TODO make configurable
-      ((MINMAXINFO*)lParam)->ptMinTrackSize.x = 480;
-      ((MINMAXINFO*)lParam)->ptMinTrackSize.y = 640;
+      ((MINMAXINFO*)lParam)->ptMinTrackSize.x = 640;
+      ((MINMAXINFO*)lParam)->ptMinTrackSize.y = 480;
       break;
     }
 

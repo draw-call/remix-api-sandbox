@@ -22,6 +22,9 @@
 #define AppMain wWinMain
 #endif
 
+#ifndef AppName
+#define AppName L"remix-api-sandbox"
+#endif
 
 //-----------------------------------------------------------------------------
 // Name: AppSetupD3DTransform()
@@ -34,6 +37,7 @@ HRESULT AppSetupD3DTransform(
   D3DXMATRIX projection,
   float minViewDistance,
   float maxViewDistance,
+  float cameraFOV,
   D3DXVECTOR3 cameraVec
 ) {
   // Create a view matrix that transforms world space to view space.
@@ -51,13 +55,12 @@ HRESULT AppSetupD3DTransform(
 
   // Create a projection matrix that defines the view frustrum.
   // It transforms the view space to projection space.
-  RECT clientRect { };
-  GetClientRect(hWnd, &clientRect);
+  RECT rc { };
+  GetClientRect(hWnd, &rc);
   D3DXMatrixPerspectiveFovRH(
     &projection,
-    D3DXToRadian(60.0f), // FOV
-    // aspect ratio (width / height)
-    static_cast<FLOAT>(clientRect.right) / clientRect.bottom,
+    D3DXToRadian(cameraFOV),
+    static_cast<FLOAT>(rc.right) / rc.bottom,
     minViewDistance,
     maxViewDistance
   );
@@ -69,24 +72,25 @@ HRESULT AppSetupD3DTransform(
     );
   }
 
-  // World-View Identity
   D3DXMatrixIdentity(&view);
+
+  // Update state
+  GetAppCtx()->SetCurrentViewMatrix(view);
+  GetAppCtx()->SetCurrentProjectionMatrix(projection);
 
   return S_OK;
 }
 
 //-----------------------------------------------------------------------------
-// Name: AppInitD3D()
+// Name: AppSetupD3D()
 // Desc: Initializes Direct3D
 //-----------------------------------------------------------------------------
-HRESULT AppInitD3D(HWND hWnd, bool force = false)
+HRESULT AppSetupD3D(AppCtx *appCtx, HWND hWnd, bool force = false)
 {
-  AppCtx *appCtx    = GetAppCtx();
   auto *pD3D9Device = appCtx->GetD3D9Device();
 
   // if we already have a device, try resetting it
   if (appCtx->GetD3D9Inited() && pD3D9Device) {
-    DXTRACE_MSG(L"WARN: Calling AppInitD3D Twice!");
     if (FAILED(pD3D9Device->Reset(appCtx->GetEnumerator()->GetRefPP()))) {
       // TODO: print warning?
       pD3D9Device->Release();
@@ -121,7 +125,7 @@ HRESULT AppInitD3D(HWND hWnd, bool force = false)
     .Y = 0,
     .Width  = (DWORD)rc.right,   // use the entire window
     .Height = (DWORD)rc.bottom,  // ..
-    .MinZ   = appCtx->GetMinViewDistance(),
+    .MinZ   = 0.1f,
     .MaxZ   = appCtx->GetMaxViewDistance(), 
   };
   hr = pD3D9Device->SetViewport(&viewport);
@@ -140,6 +144,7 @@ HRESULT AppInitD3D(HWND hWnd, bool force = false)
     appCtx->GetCurrentProjectionMatrix(),
     appCtx->GetMinViewDistance(),
     appCtx->GetMaxViewDistance(),
+    appCtx->GetCameraFOV(),
     appCtx->GetCameraVec()
   );
   if (FAILED(hr)) {
@@ -159,110 +164,181 @@ HRESULT AppInitD3D(HWND hWnd, bool force = false)
 }
 
 //-----------------------------------------------------------------------------
-// Name: AppRemixSetup()
+// Name: AppSetupRemix()
 // Desc: Setup Remix - Post Initialization
 //-----------------------------------------------------------------------------
-HRESULT AppRemixSetup(
-  PFN_remixapi_BridgeCallback beginSceneCallback,
-  PFN_remixapi_BridgeCallback endSceneCallback
+HRESULT AppSetupRemix(
+  AppCtx *appCtx,
+  PFN_remixapi_BridgeCallback beginSceneCallback = nullptr,
+  PFN_remixapi_BridgeCallback endSceneCallback   = nullptr
  ) {
-  // Init Remix callbacks API
+  //// Setup callbacks
   remixapi_ErrorCode r;
   r = remixapi::bridge_setRemixApiCallbacks(beginSceneCallback, endSceneCallback, nullptr);
   if (r != REMIXAPI_ERROR_CODE_SUCCESS) {
-    return r;
+    return DXTRACE_ERR_MSGBOX(
+      L"AppSetupRemix bridge_setRemixApiCallbacks() failed: %d\n",
+      r
+    );
   }
-  // Add some lights
+
+  //// Get current window size
+  RECT rc {};
+  GetClientRect(appCtx->GetHWNDFocus(), &rc);
+
+  //// Add some lights
   #pragma warning(push)
   #pragma warning(disable : 26812)
-  g_remix_sphereLight = {
-    .sType    = REMIXAPI_STRUCT_TYPE_LIGHT_INFO_SPHERE_EXT,
-    .pNext    = NULL,
-    .position = {-80 , 7 , 0},
-    .radius   = 0.3f,
+
+  AppRemixInterface *remix = appCtx->GetRemix();
+
+  remix->app.sphereLight = {
+    .sType            = REMIXAPI_STRUCT_TYPE_LIGHT_INFO_SPHERE_EXT,
+    .pNext            = NULL,
+    .position         = {-80 , 7 , 0},
+    .radius           = 0.3f,
     .shaping_hasvalue = FALSE,
     .shaping_value    = { 0 },
   };
-  #pragma warning(pop)
-  g_remix_lightInfo = {
-    .sType = REMIXAPI_STRUCT_TYPE_LIGHT_INFO,
-    .pNext = &g_remix_sphereLight,
-    .hash  = 0x3,
+  remix->app.lightInfo = {
+    .sType    = REMIXAPI_STRUCT_TYPE_LIGHT_INFO,
+    .pNext    = &remix->app.sphereLight,
+    .hash     = 0x3,
     .radiance = {0, 0, 0},
   };
-  r = GetAppCtx()->GetRemix().CreateLight(&g_remix_lightInfo, &g_remix_scene_light);
+  r = remix->CreateLight(&remix->app.lightInfo, &remix->app.sceneLight);
   if (r != REMIXAPI_ERROR_CODE_SUCCESS) {
-    printf("remix::CreateLight() failed: %d\n", r);
-    return r;
+    return DXTRACE_ERR_MSGBOX(
+      L"AppSetupRemix CreateLight() failed: %d\n",
+      r
+    );
   }
+
+  //// Setup initial camera information 
+  D3DXVECTOR3 cameraVec = appCtx->GetCameraVec();
+  remix->app.parametersForCamera = {
+    .sType = { REMIXAPI_STRUCT_TYPE_CAMERA_INFO_PARAMETERIZED_EXT },
+    .pNext         = { nullptr },
+    .position      = { cameraVec.x, cameraVec.y, cameraVec.z },
+    .forward       = { 0, 0, 1 },
+    .up            = { 0, 1, 0 },
+    .right         = { 1, 0, 0 },
+    .fovYInDegrees = appCtx->GetCameraFOV(),
+    .aspect        = (FLOAT)(rc.right) / (FLOAT)(rc.bottom),
+    .nearPlane     = appCtx->GetMinViewDistance(),
+    .farPlane      = appCtx->GetMaxViewDistance(),
+  };
+
+  // Remix API command info
+  remix->app.cameraInfo = {
+    .sType = REMIXAPI_STRUCT_TYPE_CAMERA_INFO,
+    .pNext = &remix->app.parametersForCamera,
+    .type  = REMIXAPI_CAMERA_TYPE_WORLD
+  };
+  #pragma warning(pop)
+
+  // Copy saved transforms to remix->app.cameraInfo
+  memcpy(
+    remix->app.cameraInfo.view, 
+    appCtx->GetCurrentViewMatrix().m,
+    sizeof(float[4][4])
+  );
+  memcpy(
+    remix->app.cameraInfo.projection,
+    appCtx->GetCurrentProjectionMatrix().m,
+    sizeof(float[4][4])
+  );
+
+  r = remix->SetupCamera(&remix->app.cameraInfo);
+  if (r != REMIXAPI_ERROR_CODE_SUCCESS) {
+    return DXTRACE_ERR_MSGBOX(
+      L"AppSetupRemix SetupCamera() failed: %d\n",
+      r
+    );
+  }
+
+  // NOTE: if we don't pass the transforms to remix->app.cameraInfo view, it will use the ones
+  // set by SetTransform
+  // appCtx->GetD3D9Device()->SetTransform(D3DTS_VIEW, &view);
+  // appCtx->GetD3D9Device()->SetTransform(D3DTS_PROJECTION, &projection);
 
   return r;
 }
 
-VOID AppBeginSceneCallback() {
-  static remixapi_CameraInfoParameterizedEXT parametersForCamera = {
-    .sType = REMIXAPI_STRUCT_TYPE_CAMERA_INFO_PARAMETERIZED_EXT,
-    .position = { 0, 0, -30 },
-    .forward = { 0,0,1 },
-    .up    = { 0,1,0 },
-    .right = { 1,0,0 },
-    .fovYInDegrees = 60,
-    .aspect = (float)1024 / (float)768,
-    .nearPlane = -1000.0f,
-    .farPlane  = 1000.0f,
-  };
-  remixapi_CameraInfo cameraInfo = {
-    .sType = REMIXAPI_STRUCT_TYPE_CAMERA_INFO,
-    .pNext = &parametersForCamera,
-    .type = REMIXAPI_CAMERA_TYPE_WORLD 
-  };
-  // GetAppCtx()->GetRemix().SetupCamera(&cameraInfo);
 
+
+
+//-----------------------------------------------------------------------------
+// Name: AppBeginSceneCallback()
+// Desc: Called for every invocation of IDirect3DDevice9->BeginScene()
+//-----------------------------------------------------------------------------
+VOID __cdecl AppBeginSceneCallback() {
+  static const D3DXVECTOR3 posVec = { 0.0f, 0.0f, 0.0f };
+  static const D3DXVECTOR3 axiVec = { 0.0f, 1.0f, 0.0f };
+  static auto remix     = GetAppCtx()->GetRemix();
+  D3DXVECTOR3 cameraVec = GetAppCtx()->GetCameraVec();
+  D3DXMATRIX  view      = GetAppCtx()->GetCurrentViewMatrix();
+
+//// Camera Animation Demo
+#if 1
+  // Update view transform for new cameraVec
+  cameraVec.z += 0.01;
+  cameraVec.y -= 0.01;
+  D3DXMatrixLookAtRH(&view, &cameraVec, &posVec, &axiVec);
+
+  // Copy updated transform matrix into remix cameraInfo and send
+  memcpy(remix->app.cameraInfo.view, view.m, sizeof(view.m));
+  remix->SetupCamera(&remix->app.cameraInfo);
+
+  // Update context with new transform data
+  GetAppCtx()->SetCurrentViewMatrix(view);
+  GetAppCtx()->SetCameraVec(cameraVec);
+#endif
 }
 
+//-----------------------------------------------------------------------------
+// Name: AppEndSceneCallback()
+// Desc: Called for every invocation of IDirect3DDevice9->EndScene()
+//-----------------------------------------------------------------------------
+VOID __cdecl AppEndSceneCallback() {
+  static auto remix = GetAppCtx()->GetRemix();
+  static const auto meshloader = GetAppCtx()->GetMeshLoader();
 
-//-----------------------------------------------------------------------------
-// Name: endSceneCallback()
-// Desc: primary remix api callback
-//-----------------------------------------------------------------------------
-VOID AppEndSceneCallback() {
-  const auto remix      = GetAppCtx()->GetRemix();
-  const auto meshloader = GetAppCtx()->GetMeshLoader();
+  //// Strobe ligting demo
 
   // Remix API doesn't allow updates
   // So we stupidly recreate it for each frame because why not ...
-  remix.DestroyLight(g_remix_scene_light);
+  remix->DestroyLight(remix->app.sceneLight);
  
-  if (!g_remix_sphereLightDirection) {
-    if (g_remix_sphereLight.position.x > -50.0f) {
-      g_remix_sphereLight.position.x -= 0.1f;
-      g_remix_lightInfo.radiance.y += 0.3f;
-      g_remix_lightInfo.radiance.x = 0;
+  if (!remix->app.sphereLightDirection) {
+    if (remix->app.sphereLight.position.x > -50.0f) {
+      remix->app.sphereLight.position.x -= 0.1f;
+      remix->app.lightInfo.radiance.y += 0.3f;
+      remix->app.lightInfo.radiance.x = 0;
     } else {
-      g_remix_lightInfo.radiance.y = 0;
-      g_remix_lightInfo.radiance.x = 0;
-      g_remix_sphereLightDirection = 1;
+      remix->app.lightInfo.radiance.y = 0;
+      remix->app.lightInfo.radiance.x = 0;
+      remix->app.sphereLightDirection = 1;
     }
   } else {
-    if (g_remix_sphereLight.position.x < 50.0f) {
-      g_remix_sphereLight.position.x += 0.1f;
-      g_remix_lightInfo.radiance.x += 0.3f;
-      g_remix_lightInfo.radiance.y = 0;
+    if (remix->app.sphereLight.position.x < 50.0f) {
+      remix->app.sphereLight.position.x += 0.1f;
+      remix->app.lightInfo.radiance.x += 0.3f;
+      remix->app.lightInfo.radiance.y = 0;
     } else {
-      g_remix_lightInfo.radiance.y = 0;
-      g_remix_lightInfo.radiance.x = 0;
-      g_remix_sphereLightDirection = 0;
+      remix->app.lightInfo.radiance.y = 0;
+      remix->app.lightInfo.radiance.x = 0;
+      remix->app.sphereLightDirection = 0;
     }
   }
 
   // Draw OBJ mesh instances
-  if (meshloader) {
+  if (meshloader) [[likely]]
     meshloader->GetMesh()->DrawSubset(0);
-  }
 
   // Let there be light
-  remix.CreateLight(&g_remix_lightInfo, &g_remix_scene_light);
-  remix.DrawLightInstance(g_remix_scene_light);
+  remix->CreateLight(&remix->app.lightInfo, &remix->app.sceneLight);
+  remix->DrawLightInstance(remix->app.sceneLight);
 }
 
 //-----------------------------------------------------------------------------
@@ -272,9 +348,28 @@ VOID AppEndSceneCallback() {
 VOID AppRender(IDirect3DDevice9 *pD3D9Device) {
   pD3D9Device->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
   pD3D9Device->BeginScene();
-  // XXX: Hooks add calls between Begin and End
+  // Hooks add calls between Begin and End
   pD3D9Device->EndScene();
   pD3D9Device->Present(NULL, NULL, NULL, NULL);
+}
+
+//-----------------------------------------------------------------------------
+// Name: AppInit()
+// Desc: Initializes firt-time context and sets init state, plus extras
+//-----------------------------------------------------------------------------
+AppCtx *AppInit(bool console = true) {
+  AppCtx *appCtx = GetAppCtx();
+  appCtx->SetInited(true);
+  
+  if (console && AllocConsole()) {
+    FILE* f = nullptr;
+    (void) freopen_s(&f, "CONIN$",  "r", stdin);
+    (void) freopen_s(&f, "CONOUT$", "w", stdout);
+    (void) freopen_s(&f, "CONOUT$", "w", stderr);
+    SetConsoleTitleW(AppName);
+  }
+
+  return appCtx;
 }
 
 
@@ -292,55 +387,52 @@ INT AppMain(
   UNREFERENCED_PARAMETER(hPrevInstance);
   UNREFERENCED_PARAMETER(lpCmdLine);
   UNREFERENCED_PARAMETER(nShowCmd);
-
-  FILE* f = nullptr;
-  (void) freopen_s(&f, "CONIN$", "r",  stdin);
-  (void) freopen_s(&f, "CONOUT$", "w", stdout);
-  (void) freopen_s(&f, "CONOUT$", "w", stderr);
-
-  // Grab appCtx early
-  AppCtx *appCtx = GetAppCtx();
-  auto remix = appCtx->GetRemix();
-
-  // TODO: AppInit()
-  appCtx->SetInited(true);
-
+  
   HRESULT hr = 0;
+  AppCtx *appCtx = AppInit();
 
   //// Create Window
   HWND appWindow = NULL;
   {
-    hr = AppCreateWindow(L"remix-api-sandbox", NULL, NULL, NULL, 100, 100);
+    hr = AppCreateWindowW(AppName, NULL, NULL, NULL, 100, 100);
     if (FAILED(hr)) {
       return DXTRACE_ERR_MSGBOX(
         L"Failed to create application window",
         E_FAIL
       );
-    } else {
-      appWindow = appCtx->GetHWNDFocus();
     }
+    appWindow = appCtx->GetHWNDFocus();
     ShowWindow(appWindow, SW_SHOWDEFAULT);
     UpdateWindow(appWindow);
   }
 
   //// Direct3D / Remix / Managers
+  IDirect3DDevice9 *pD3D9Device = nullptr;
   {
-    // Initialize Direct3D
-    hr = AppInitD3D(appWindow);
+    hr = AppSetupD3D(appCtx, appWindow);
     if (FAILED(hr)) {
-      return DXTRACE_ERR_MSGBOX(L"AppInitD3D: failed", hr);
+      return DXTRACE_ERR_MSGBOX(
+        L"AppSetupD3D: failed",
+        hr
+      );
+    }
+    pD3D9Device = appCtx->GetD3D9Device();
+
+    hr = AppSetupRemix(appCtx, AppBeginSceneCallback, AppEndSceneCallback);
+    if (FAILED(hr)) {
+      return DXTRACE_ERR_MSGBOX(
+        L"AppSetupRemix: failed",
+        hr
+      );
     }
 
-    // Setup Remix
-    hr = AppRemixSetup(AppBeginSceneCallback, AppEndSceneCallback);
-    if (FAILED(hr)) {
-      return DXTRACE_ERR_MSGBOX(L"AppRemixSetup: failed", hr);
-    }
-
-    // Setup OBJ meshloader
-    std::filesystem::path objfilepath("H:/Share/Sources/magos/game/models/teapot.obj");
-    if (FAILED(appCtx->GetMeshLoader()->Create(appCtx->GetD3D9Device(), objfilepath))) {
-      return DXTRACE_ERR_MSGBOX(L"WARN: Failed to parse OBJ", E_FAIL);
+    auto meshloader = appCtx->GetMeshLoader();
+    std::filesystem::path objfilepath("H:/Share/Sources/magos/game/models/teapot.obj"); // TODO: make configurable
+    if (FAILED(meshloader->Create(pD3D9Device, objfilepath))) {
+      return DXTRACE_ERR_MSGBOX(
+        L"WARN: Failed to parse OBJ",
+        E_FAIL
+      );
     }
   }
 
@@ -353,7 +445,7 @@ INT AppMain(
       DispatchMessage(&msg);
     }
     if (!appCtx->GetIsRenderingPaused()) {
-      AppRender(appCtx->GetD3D9Device());
+      AppRender(pD3D9Device);
     }
   }
   UnregisterClassW(L"Direct3DWindowClass", appCtx->GetHInstance()); 

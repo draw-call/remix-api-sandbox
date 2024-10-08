@@ -29,7 +29,8 @@ APP_OBJ_TARGETS = \
   $(LOCAL_SOURCE_DIR)\window.obj \
   $(LOCAL_SOURCE_DIR)\device.obj \
   $(LOCAL_SOURCE_DIR)\dxerror.obj \
-  $(LOCAL_SOURCE_DIR)\meshloader.obj
+  $(LOCAL_SOURCE_DIR)\meshloader.obj \
+  $(LOCAL_SOURCE_DIR)\app.obj
 
 
 help:
@@ -109,10 +110,11 @@ build-remix: \
   build-dxvk-remix \
   build-bridge-remix
 
+
 .cpp.obj:
   -@ $(CPP) $(CPPFLAGS) /c /Fo:$@ $*.cpp
 
-app $(LOCAL_GAME_DIR)\app.exe: $(LOCAL_SOURCE_DIR)\app.cpp $(APP_OBJ_TARGETS)
+app $(LOCAL_GAME_DIR)\app.exe: $(APP_OBJ_TARGETS)
   -@ $(CPP) \
     $(CPPFLAGS) \
     /Fo:$(LOCAL_SOURCE_DIR)\$@.obj \
@@ -138,3 +140,4 @@ clean:
   build-bridge-remix \
   app \
   clean
+

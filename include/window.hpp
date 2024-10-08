@@ -11,6 +11,8 @@ HRESULT WINAPI AppCreateWindow(
   int x, int y
 );
 
+#define AppCreateWindowW AppCreateWindow
+
 //--------------------------------------------------------------------------------------
 // Handles window messages
 //--------------------------------------------------------------------------------------

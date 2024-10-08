@@ -2,6 +2,7 @@
 #include "state.hpp"
 #include "timer.hpp"
 #include "meshloader.hpp"
+#include "app_remix.hpp"
 
 //--------------------------------------------------------------------------------------
 // Call-Once AppCtxManager
@@ -9,12 +10,12 @@
 AppCtxManager::AppCtxManager() {
   if (g_ctx == NULL) {
     // Initialize RTX API
-    // XXX: THIS MUST BE DONE BEFORE ENTERING A CRITICAL SECTION
+    // XXX: This must be done before entering a critical section 
     remixapi_ErrorCode r;
-    remixapi_Interface remix;
-    if ((r = remixapi::bridge_initRemixApi(&remix)) != REMIXAPI_ERROR_CODE_SUCCESS) {
+    AppRemixInterface *remix = new AppRemixInterface();
+    if ((r = remixapi::bridge_initRemixApi(remix)) != REMIXAPI_ERROR_CODE_SUCCESS) {
       DXTRACE_ERR_MSGBOX(
-        L"bridge_initRemixApi: failed",
+        L"AppCtxManager: bridge_initRemixApi: failed",
         r
       );
     }
@@ -24,16 +25,29 @@ AppCtxManager::AppCtxManager() {
     g_ctx = std::unique_ptr<AppCtx>(new AppCtx());
     if (!g_ctx.get()) {
       DXTRACE_ERR_MSGBOX(
-        L"AppCtx creation silently failed",
+        L"AppCtxManager: AppCtx creation silently failed",
         E_FAIL
       );
     }
 
+    auto D3D9 = Direct3DCreate9(D3D_SDK_VERSION);
+    if (!D3D9) {
+      DXTRACE_ERR_MSGBOX(
+        L"AppCtxManager: D3D9 failed",
+        HRESULT_FROM_WIN32(GetLastError())
+      );
+
+    }
+
     // Set runtime components
-    g_ctx.get()->SetD3D9(Direct3DCreate9(D3D_SDK_VERSION));
+    g_ctx.get()->SetD3D9(D3D9);
     g_ctx.get()->SetRemix(remix);
-    g_ctx.get()->SetEnumerator(new CD3D9Enumeration((g_ctx.get()->GetD3D9()), false));
-    g_ctx.get()->SetMeshLoader(new CMeshLoader());
+    g_ctx.get()->SetEnumerator(
+      new CD3D9Enumeration((g_ctx.get()->GetD3D9()), false)
+    );
+    g_ctx.get()->SetMeshLoader(
+      new CMeshLoader()
+    );
   }
 }
 

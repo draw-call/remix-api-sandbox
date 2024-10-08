@@ -2,19 +2,36 @@
 
 #include "remixapi/bridge_remix_api.h"
 
-// Remix
-static remixapi_LightInfo          g_remix_lightInfo;
-static remixapi_LightHandle        g_remix_scene_light = NULL;
-static remixapi_LightInfoSphereEXT g_remix_sphereLight;
-static bool g_remix_sphereLightDirection = 1;
 
-constexpr remixapi_HardcodedVertex makeVertex(float x, float y, float z)
-{
-  remixapi_HardcodedVertex v = {
-    { x, y, z },
-    { 0, 0, -1 },
-    { 1, 1 },
-    0xFFFFFFFF
+struct AppRemixInterface : remixapi_Interface {
+
+  struct local {
+    bool sphereLightDirection;
+
+    remixapi_LightInfo          lightInfo;
+    remixapi_LightInfoSphereEXT sphereLight;
+    remixapi_LightHandle        sceneLight;
+
+    remixapi_CameraInfo cameraInfo;
+    remixapi_CameraInfoParameterizedEXT parametersForCamera;
   };
-  return v;
-}
+
+  local app;
+
+  AppRemixInterface() {
+    app.sphereLightDirection = 1;
+  }
+
+  constexpr remixapi_HardcodedVertex makeVertex(float x, float y, float z)
+  {
+    remixapi_HardcodedVertex v = {
+      { x, y, z },
+      { 0, 0, -1 },
+      { 1, 1 },
+      0xFFFFFFFF
+    };
+    return v;
+  }
+};
+
+

@@ -10,6 +10,7 @@
 #include "statecb.hpp"
 #include "device.hpp"
 #include "meshloader.hpp"
+#include "app_remix.hpp"
 
 #ifndef DEFAULT_VIEW_DISTANCE
 #define DEFAULT_VIEW_DISTANCE 1000.0f
@@ -94,7 +95,7 @@ protected:
     bool     m_DeviceLost;
 
     // RTX Remix Interface
-    remixapi_Interface m_Remix;
+    AppRemixInterface *m_Remix;
 
     // Device Enumerator
     CD3D9Enumeration *m_Enumerator;
@@ -229,6 +230,8 @@ public:
     m_ctx.m_CameraVec.x = 0;
     m_ctx.m_CameraVec.y = 0;
     m_ctx.m_CameraVec.z = -20.0f;
+
+    m_ctx.m_CameraFOV = 60.0f;
     m_ctx.m_CurrentViewMatrix       = D3DXMATRIX();
     m_ctx.m_CurrentProjectionMatrix = D3DXMATRIX();
   }
@@ -253,7 +256,7 @@ public:
   GET_SET_ACCESSOR   (bool, DeviceLost);
   
   // RTX Remix
-  GET_SET_ACCESSOR(remixapi_Interface, Remix);
+  GET_SET_ACCESSOR(AppRemixInterface*, Remix);
  
   // Device Enumerator
   GET_SET_ACCESSOR(CD3D9Enumeration*, Enumerator);
