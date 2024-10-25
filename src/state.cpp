@@ -7,8 +7,8 @@
 //--------------------------------------------------------------------------------------
 // Call-Once AppCtxManager
 //--------------------------------------------------------------------------------------
-AppCtxManager::AppCtxManager() {
-  if (g_ctx == NULL) {
+AppCtx *GetAppCtx() {
+  if (g_ctx == NULL) [[unlikely]] {
     // Initialize RTX API
     // XXX: This must be done before entering a critical section 
     remixapi_ErrorCode r;
@@ -36,7 +36,6 @@ AppCtxManager::AppCtxManager() {
         L"AppCtxManager: D3D9 failed",
         HRESULT_FROM_WIN32(GetLastError())
       );
-
     }
 
     // Set runtime components
@@ -49,18 +48,8 @@ AppCtxManager::AppCtxManager() {
       new CMeshLoader()
     );
   }
+  return g_ctx.get();
 }
-
-AppCtx *GetAppCtx() {
-  static AppCtxManager g_ctx_manager;
-  assert (g_ctx);
-  return  g_ctx.get();
-}
-
-AppCtxManager::~AppCtxManager() {
-  g_ctx.reset();
-}
-
 
 //--------------------------------------------------------------------------------------
 // Pauses time or rendering.  Keeps a ref count so pausing can be layered

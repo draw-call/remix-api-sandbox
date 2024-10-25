@@ -13,23 +13,62 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="bridge-remix">
+    <Filter Include="Source Files\skel">
+      <UniqueIdentifier>{7b8bd917-b321-4f22-99cd-d1a451d221ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Detours">
+      <UniqueIdentifier>{9bcb9095-cdef-48e5-a5fe-f0e310748185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\remix">
+      <UniqueIdentifier>{4b676dbb-2c12-462e-928c-1dd7c5862ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\remixapi">
+      <UniqueIdentifier>{7304a260-953c-4f20-9181-7a59b7d815f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files">
+      <UniqueIdentifier>{26e4bec6-1a4d-49bd-9581-1f143fbf3ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\kanan">
+      <UniqueIdentifier>{7a615b6e-7f89-44ec-9b6e-5e72553597dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\kanan\core">
+      <UniqueIdentifier>{87be7764-974b-4204-ba57-bf8c8f01c866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\kanan\extension">
+      <UniqueIdentifier>{e75ff2a6-d060-429d-9768-8e984299123a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\Detours">
+      <UniqueIdentifier>{1a20ef43-6d60-4e09-87a1-5bcc19e8d587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\bridge-remix">
       <UniqueIdentifier>{5e818579-a5f0-4adc-8a65-5332347b5bda}</UniqueIdentifier>
     </Filter>
-    <Filter Include="bridge-remix\client">
+    <Filter Include="External Source Files\bridge-remix\client">
       <UniqueIdentifier>{81bf62f1-f88a-47bb-857c-e71408007a30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="bridge-remix\server">
+    <Filter Include="External Source Files\bridge-remix\server">
       <UniqueIdentifier>{63226a19-cd05-475a-802d-3bb3807f6b6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="bridge-remix\util">
+    <Filter Include="External Source Files\bridge-remix\util">
       <UniqueIdentifier>{86253048-c868-4825-89cf-f670ea900e61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="bridge-remix\util\config">
+    <Filter Include="External Source Files\bridge-remix\util\config">
       <UniqueIdentifier>{85250dc8-f08a-4935-90c8-761c2ede10f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="bridge-remix\util\log">
+    <Filter Include="External Source Files\bridge-remix\util\log">
       <UniqueIdentifier>{dc7596e2-0d68-4084-86c0-3daa0ef61791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\dxvk-remix">
+      <UniqueIdentifier>{052c2cc0-6607-4248-bc69-ca7f8113f0e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\dxvk-remix\d3d9">
+      <UniqueIdentifier>{5ab35566-3c92-44d7-8d59-850894aabddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\skel">
+      <UniqueIdentifier>{9c9453c8-c036-4d37-b3c9-053df093d3d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\skel\game">
+      <UniqueIdentifier>{313aa833-e0ef-40cd-ab77-33c6263c6b34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,121 +79,121 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_bootstrap.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_cubetexture.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_device.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_device_base.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_indexbuffer.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_lss.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_module.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_pixelshader.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_query.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_resource.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_stateblock.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_surface.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_swapchain.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_texture.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_vertexbuffer.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_vertexdeclaration.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_vertexshader.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_volume.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\d3d9_volumetexture.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\di_hook.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\pch.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\remix_api.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\client\remix_state.cpp">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\server\main.cpp">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\server\module_processing.cpp">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\server\remix_api.cpp">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_bridgecommand.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_gdi.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_messagechannel.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_monitor.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_process.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_remixapi.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_seh.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_semaphore.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_sharedheap.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\util_sharedmemory.cpp">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\config\config.cpp">
-      <Filter>bridge-remix\util\config</Filter>
+      <Filter>External Source Files\bridge-remix\util\config</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\config\global_options.cpp">
-      <Filter>bridge-remix\util\config</Filter>
+      <Filter>External Source Files\bridge-remix\util\config</Filter>
     </ClCompile>
     <ClCompile Include="bridge-remix\src\util\log\log.cpp">
-      <Filter>bridge-remix\util\log</Filter>
+      <Filter>External Source Files\bridge-remix\util\log</Filter>
     </ClCompile>
     <ClCompile Include="src\dxerror.cpp">
       <Filter>Source Files</Filter>
@@ -174,17 +213,170 @@
     <ClCompile Include="src\scraps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="kanan\core\Memory.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Module.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Patch.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Pattern.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Scan.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\String.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Utility.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\injector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\skel\d3d9ex.cpp">
+      <Filter>Source Files\skel</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\creatwth.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\detours.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\disasm.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\disolarm.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\disolarm64.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\disolia64.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\disolx64.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\disolx86.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\image.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\modules.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\src\uimports.cpp">
+      <Filter>External Source Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_adapter.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_buffer.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_common_buffer.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_common_texture.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_cursor.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_device.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_fixed_function.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_format.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_format_helpers.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_hud.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_initializer.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_interface.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_main.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_monitor.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_multithread.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_names.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_options.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_query.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_rtx.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_rtx_geometry.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_rtx_utils.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_sampler.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_shader.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_state.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_stateblock.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_surface.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_swapchain.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_swapchain_external.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_swvp_emu.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_texture.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_util.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_vertex_declaration.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_volume.cpp">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\remix\remix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\remix\remix_c.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\remixapi\bridge_remix_api.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\dxvkcom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -192,223 +384,223 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\base.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\client_options.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_base_texture.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_commonshader.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_cubetexture.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_device.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_device_base.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_indexbuffer.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_lss.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_pixelshader.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_privatedata.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_query.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_resource.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_surface.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_surfacebuffer_helper.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_swapchain.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_texture.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_util.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_vertexbuffer.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_vertexdeclaration.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_vertexshader.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_volume.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\d3d9_volumetexture.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\di_hook.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\framework.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\lockable_buffer.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\pch.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\remix_api.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\remix_state.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\resource.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\shadow_map.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\swapchain_map.h">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\server\module_processing.h">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\server\remix_api.h">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\server\resource.h">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\server\server_options.h">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_atomiccircularqueue.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_blockingcircularqueue.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_bridge_assert.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_bridge_state.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_bridgecommand.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_bytes.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_circularbuffer.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_circularqueue.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_commands.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_common.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_detourtools.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_devicecommand.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_filesys.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_gdi.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_guid.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_hack_d3d_debug.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_ipcchannel.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_messagechannel.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_modulecommand.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_monitor.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_once.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_process.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_remixapi.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_scopedlock.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_seh.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_semaphore.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_serializable.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_serializer.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_sharedheap.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_sharedmemory.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_singleton.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_texture_and_volume.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\util_version.h">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\config\config.h">
-      <Filter>bridge-remix\util\config</Filter>
+      <Filter>External Source Files\bridge-remix\util\config</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\config\global_options.h">
-      <Filter>bridge-remix\util\config</Filter>
+      <Filter>External Source Files\bridge-remix\util\config</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\log\log.h">
-      <Filter>bridge-remix\util\log</Filter>
+      <Filter>External Source Files\bridge-remix\util\log</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\util\log\log_strings.h">
-      <Filter>bridge-remix\util\log</Filter>
+      <Filter>External Source Files\bridge-remix\util\log</Filter>
     </ClInclude>
     <ClInclude Include="include\cgarray.hpp">
       <Filter>Header Files</Filter>
@@ -434,41 +626,260 @@
     <ClInclude Include="include\app_remix.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="kanan\kanan.h">
+      <Filter>External Source Files\kanan</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\core\Memory.hpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\core\Module.hpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\core\Patch.hpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\core\Pattern.hpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\core\Scan.hpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\core\String.hpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\core\Utility.hpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\extension\constaes.hpp">
+      <Filter>External Source Files\kanan\extension</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\extension\encryption.hpp">
+      <Filter>External Source Files\kanan\extension</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\extension\extension.hpp">
+      <Filter>External Source Files\kanan\extension</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\extension\static_for.hpp">
+      <Filter>External Source Files\kanan\extension</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MinHook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\app.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours\src\detours.h">
+      <Filter>External Source Files\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours\src\detver.h">
+      <Filter>External Source Files\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours\include\detours.h">
+      <Filter>Header Files\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours\include\detver.h">
+      <Filter>Header Files\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours\include\syelog.h">
+      <Filter>Header Files\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="bridge-remix\ext\remix\remix.h">
+      <Filter>Header Files\remix</Filter>
+    </ClInclude>
+    <ClInclude Include="bridge-remix\ext\remix\remix_c.h">
+      <Filter>Header Files\remix</Filter>
+    </ClInclude>
+    <ClInclude Include="bridge-remix\public\include\remixapi\bridge_remix_api.h">
+      <Filter>Header Files\remixapi</Filter>
+    </ClInclude>
+    <ClInclude Include="kanan\core\HMacros.hpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_adapter.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_buffer.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_caps.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_common_buffer.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_common_texture.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_constant_layout.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_constant_set.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_cursor.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_device.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_device_child.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_fixed_function.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_format.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_format_helpers.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_hud.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_include.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_initializer.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_interface.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_monitor.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_multithread.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_names.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_options.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_query.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_resource.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_rtx.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_rtx_utils.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_sampler.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_shader.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_shader_permutations.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_shader_validator.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_spec_constants.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_state.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_stateblock.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_subresource.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_surface.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_swapchain.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_swvp_emu.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_texture.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_util.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_vertex_declaration.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_volume.h">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\cdc_internal.hpp">
+      <Filter>Header Files\skel</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\d3d9ex.hpp">
+      <Filter>Header Files\skel</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\game\base.hpp">
+      <Filter>Header Files\skel\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\game\trl.hpp">
+      <Filter>Header Files\skel\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\cdc.hpp">
+      <Filter>Header Files\skel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="bridge-remix\src\meson.build">
-      <Filter>bridge-remix</Filter>
+      <Filter>External Source Files\bridge-remix</Filter>
     </None>
     <None Include="bridge-remix\src\client\d3d9_lss.def">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </None>
     <None Include="bridge-remix\src\client\meson.build">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </None>
     <None Include="bridge-remix\src\client\version.rc.in">
-      <Filter>bridge-remix\client</Filter>
+      <Filter>External Source Files\bridge-remix\client</Filter>
     </None>
     <None Include="bridge-remix\src\server\meson.build">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </None>
     <None Include="bridge-remix\src\server\version.rc.in">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </None>
     <None Include="bridge-remix\src\util\meson.build">
-      <Filter>bridge-remix\util</Filter>
+      <Filter>External Source Files\bridge-remix\util</Filter>
+    </None>
+    <None Include="dadadadadadadadadadadada.gitignore">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Detours\src\Makefile">
+      <Filter>External Source Files\Detours</Filter>
+    </None>
+    <None Include="dxvk-remix\src\d3d9\d3d9.def">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </None>
+    <None Include="dxvk-remix\src\d3d9\meson.build">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </None>
+    <None Include="dxvk-remix\src\d3d9\version.rc.in">
+      <Filter>External Source Files\dxvk-remix\d3d9</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="bridge-remix\src\server\NvRemixBridge.ico">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="bridge-remix\src\server\NvRemixBridge.rc">
-      <Filter>bridge-remix\server</Filter>
+      <Filter>External Source Files\bridge-remix\server</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

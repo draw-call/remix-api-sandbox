@@ -4,3 +4,6 @@
 [submodule "dxvk-remix"]
 	path = dxvk-remix
 	url = https://github.com/NVIDIAGameWorks/dxvk-remix
+[submodule "Detours"]
+	path = Detours
+	url = https://github.com/microsoft/Detours

@@ -1,11 +1,22 @@
 Win32/
 x64/
+prod_builds/
 .vs/
 
 include/remix
 include/remixapi
 
+# for now ...
+script/
+
+lib/detours.pdb
+
+kanan/extension
+kanan/core/*.obj
+lib/libkanan.lib
+
 src/*.obj
+src/skel/*.obj
 vc*.pdb
 
 game/*

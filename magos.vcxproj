@@ -88,51 +88,59 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <NMakeBuildCommandLine>nmake app</NMakeBuildCommandLine>
-    <NMakeOutput>.\game\app.exe</NMakeOutput>
+    <NMakeBuildCommandLine>nmake app dll injector</NMakeBuildCommandLine>
+    <NMakeOutput>.\game\magos.injector.exe</NMakeOutput>
     <NMakeCleanCommandLine>nmake clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>nmake app</NMakeReBuildCommandLine>
-    <NMakePreprocessorDefinitions>WIN32;REMIX_ALLOW_X86;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>.\dxvk-remix\src\dxvk\rtx_render;.\bridge-remix\ext;.\include;.\bridge-remix\src\client;.\bridge-remix\src\util;$(NMakeIncludeSearchPath);$(DXSDK_DIR)include</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>nmake app dll injector</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>.\kanan;.\include;.\include\detours;.\dxvk-remix\src\dxvk\rtx_render;.\bridge-remix\ext;.\bridge-remix\src\client;.\bridge-remix\src\util;$(NMakeIncludeSearchPath);$(DXSDK_DIR)include</NMakeIncludeSearchPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <AdditionalOptions>/std:c++latest</AdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <NMakeBuildCommandLine>nmake app</NMakeBuildCommandLine>
-    <NMakeOutput>.\game\app.exe</NMakeOutput>
+    <NMakeBuildCommandLine>nmake app dll injector</NMakeBuildCommandLine>
+    <NMakeOutput>.\game\magos.injector.exe</NMakeOutput>
     <NMakeCleanCommandLine>nmake clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>nmake app</NMakeReBuildCommandLine>
-    <NMakePreprocessorDefinitions>WIN32;REMIX_ALLOW_X86;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>.\dxvk-remix\src\dxvk\rtx_render;.\bridge-remix\src\util;.\bridge-remix\src\client;H:\Share\Sources\magos\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>nmake app dll injector</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>.\include\detours;.\kanan;.\dxvk-remix\src\dxvk\rtx_render;.\bridge-remix\src\util;.\bridge-remix\src\client;H:\Share\Sources\magos\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <AdditionalOptions>/std:c++latest</AdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='build-remix-release|Win32'">
     <NMakeBuildCommandLine>nmake build-remix</NMakeBuildCommandLine>
-    <NMakeOutput>.\games\app.exe</NMakeOutput>
+    <NMakeOutput>
+    </NMakeOutput>
     <NMakeCleanCommandLine>nmake clean</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>nmake build-remix</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>.\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>.\kanan;.\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NMakePreprocessorDefinitions>WIN64;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>.\include;.\bridge-remix\src\client;.\bridge-remix\src\util;$(NMakeIncludeSearchPath);</NMakeIncludeSearchPath>
-    <NMakeBuildCommandLine>nmake app</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake app</NMakeReBuildCommandLine>
+    <NMakeIncludeSearchPath>.\include\detours;.\kanan;.\include;.\bridge-remix\src\client;.\bridge-remix\src\util;$(NMakeIncludeSearchPath);</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>nmake app dll injector</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake app dll injector</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>nmake clean</NMakeCleanCommandLine>
-    <NMakeOutput>.\game\app.exe</NMakeOutput>
+    <NMakeOutput>.\game\magos.injector.exe</NMakeOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='build-remix-release|x64'">
     <NMakePreprocessorDefinitions>WIN64;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>.\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>.\kanan;.\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeBuildCommandLine>nmake build-remix</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>nmake build-remix</NMakeReBuildCommandLine>
     <NMakeOutput>
     </NMakeOutput>
     <NMakeCleanCommandLine>nmake clean</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NMakeIncludeSearchPath>.\include\detours;.\kanan;</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>nmake app dll injector</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake app dll injector</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake clean</NMakeCleanCommandLine>
+    <NMakeOutput>.\game\magos.injector.exe</NMakeOutput>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -180,16 +188,73 @@
     <ClCompile Include="bridge-remix\src\util\util_semaphore.cpp" />
     <ClCompile Include="bridge-remix\src\util\util_sharedheap.cpp" />
     <ClCompile Include="bridge-remix\src\util\util_sharedmemory.cpp" />
+    <ClCompile Include="Detours\src\creatwth.cpp" />
+    <ClCompile Include="Detours\src\detours.cpp" />
+    <ClCompile Include="Detours\src\disasm.cpp" />
+    <ClCompile Include="Detours\src\disolarm.cpp" />
+    <ClCompile Include="Detours\src\disolarm64.cpp" />
+    <ClCompile Include="Detours\src\disolia64.cpp" />
+    <ClCompile Include="Detours\src\disolx64.cpp" />
+    <ClCompile Include="Detours\src\disolx86.cpp" />
+    <ClCompile Include="Detours\src\image.cpp" />
+    <ClCompile Include="Detours\src\modules.cpp" />
+    <ClCompile Include="Detours\src\uimports.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_adapter.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_buffer.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_common_buffer.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_common_texture.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_cursor.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_device.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_fixed_function.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_format.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_format_helpers.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_hud.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_initializer.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_interface.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_main.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_monitor.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_multithread.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_names.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_options.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_query.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_rtx.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_rtx_geometry.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_rtx_utils.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_sampler.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_shader.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_state.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_stateblock.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_surface.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_swapchain.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_swapchain_external.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_swvp_emu.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_texture.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_util.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_vertex_declaration.cpp" />
+    <ClCompile Include="dxvk-remix\src\d3d9\d3d9_volume.cpp" />
+    <ClCompile Include="kanan\core\Memory.cpp" />
+    <ClCompile Include="kanan\core\Module.cpp" />
+    <ClCompile Include="kanan\core\Patch.cpp" />
+    <ClCompile Include="kanan\core\Pattern.cpp" />
+    <ClCompile Include="kanan\core\Scan.cpp" />
+    <ClCompile Include="kanan\core\String.cpp" />
+    <ClCompile Include="kanan\core\Utility.cpp" />
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\device.cpp" />
+    <ClCompile Include="src\dll.cpp" />
     <ClCompile Include="src\dxerror.cpp" />
+    <ClCompile Include="src\injector.cpp" />
     <ClCompile Include="src\meshloader.cpp" />
     <ClCompile Include="src\scraps.cpp" />
+    <ClCompile Include="src\skel\d3d9ex.cpp" />
     <ClCompile Include="src\state.cpp" />
     <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bridge-remix\ext\remix\remix.h" />
+    <ClInclude Include="bridge-remix\ext\remix\remix_c.h" />
+    <ClInclude Include="bridge-remix\public\include\remixapi\bridge_remix_api.h" />
     <ClInclude Include="bridge-remix\src\client\base.h" />
     <ClInclude Include="bridge-remix\src\client\client_options.h" />
     <ClInclude Include="bridge-remix\src\client\d3d9_base_texture.h" />
@@ -263,21 +328,84 @@
     <ClInclude Include="bridge-remix\src\util\util_singleton.h" />
     <ClInclude Include="bridge-remix\src\util\util_texture_and_volume.h" />
     <ClInclude Include="bridge-remix\src\util\util_version.h" />
+    <ClInclude Include="Detours\include\detours.h" />
+    <ClInclude Include="Detours\include\detver.h" />
+    <ClInclude Include="Detours\include\syelog.h" />
+    <ClInclude Include="Detours\src\detours.h" />
+    <ClInclude Include="Detours\src\detver.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_adapter.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_buffer.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_caps.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_common_buffer.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_common_texture.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_constant_layout.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_constant_set.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_cursor.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_device.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_device_child.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_fixed_function.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_format.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_format_helpers.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_hud.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_include.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_initializer.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_interface.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_monitor.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_multithread.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_names.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_options.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_query.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_resource.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_rtx.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_rtx_utils.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_sampler.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_shader.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_shader_permutations.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_shader_validator.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_spec_constants.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_state.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_stateblock.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_subresource.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_surface.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_swapchain.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_swvp_emu.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_texture.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_util.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_vertex_declaration.h" />
+    <ClInclude Include="dxvk-remix\src\d3d9\d3d9_volume.h" />
+    <ClInclude Include="include\app.hpp" />
     <ClInclude Include="include\app_remix.hpp" />
     <ClInclude Include="include\cgarray.hpp" />
     <ClInclude Include="include\device.hpp" />
     <ClInclude Include="include\dxerror.hpp" />
     <ClInclude Include="include\dxvkcom.h" />
     <ClInclude Include="include\meshloader.hpp" />
-    <ClInclude Include="include\remixapi\bridge_remix_api.h" />
-    <ClInclude Include="include\remix\remix.h" />
-    <ClInclude Include="include\remix\remix_c.h" />
+    <ClInclude Include="include\MinHook.h" />
+    <ClInclude Include="include\skel\cdc.hpp" />
+    <ClInclude Include="include\skel\cdc_internal.hpp" />
+    <ClInclude Include="include\skel\d3d9ex.hpp" />
+    <ClInclude Include="include\skel\game\base.hpp" />
+    <ClInclude Include="include\skel\game\trl.hpp" />
     <ClInclude Include="include\state.hpp" />
     <ClInclude Include="include\statecb.hpp" />
     <ClInclude Include="include\timer.hpp" />
     <ClInclude Include="include\window.hpp" />
+    <ClInclude Include="kanan\core\HMacros.hpp" />
+    <ClInclude Include="kanan\core\Memory.hpp" />
+    <ClInclude Include="kanan\core\Module.hpp" />
+    <ClInclude Include="kanan\core\Patch.hpp" />
+    <ClInclude Include="kanan\core\Pattern.hpp" />
+    <ClInclude Include="kanan\core\Scan.hpp" />
+    <ClInclude Include="kanan\core\String.hpp" />
+    <ClInclude Include="kanan\core\Utility.hpp" />
+    <ClInclude Include="kanan\extension\constaes.hpp" />
+    <ClInclude Include="kanan\extension\encryption.hpp" />
+    <ClInclude Include="kanan\extension\extension.hpp" />
+    <ClInclude Include="kanan\extension\static_for.hpp" />
+    <ClInclude Include="kanan\kanan.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="dadadadadadadadadadadada.gitignore" />
     <None Include="bridge-remix\src\client\d3d9_lss.def" />
     <None Include="bridge-remix\src\client\meson.build" />
     <None Include="bridge-remix\src\client\version.rc.in" />
@@ -285,6 +413,10 @@
     <None Include="bridge-remix\src\server\meson.build" />
     <None Include="bridge-remix\src\server\version.rc.in" />
     <None Include="bridge-remix\src\util\meson.build" />
+    <None Include="Detours\src\Makefile" />
+    <None Include="dxvk-remix\src\d3d9\d3d9.def" />
+    <None Include="dxvk-remix\src\d3d9\meson.build" />
+    <None Include="dxvk-remix\src\d3d9\version.rc.in" />
     <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>

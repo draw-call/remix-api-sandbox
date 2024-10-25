@@ -1,8 +1,6 @@
 // D3D9 Remix Demo / Playground / Sandbox / Dogshit
 // watbulb
-#pragma comment(lib, "d3d9.lib")
-#pragma comment(lib, "d3dx9.lib")
-#pragma comment(lib, "d3dcompiler.lib")
+
 #include <Windows.h>
 
 #include <vector>
@@ -12,11 +10,7 @@
 #include <d3dx9.h>
 #include <d3d9types.h>
 
-#include "app_remix.hpp"
-#include "dxerror.hpp"
-#include "meshloader.hpp"
-#include "state.hpp"
-#include "window.hpp"
+#include "app.hpp"
 
 #ifndef AppMain
 #define AppMain wWinMain
@@ -25,6 +19,11 @@
 #ifndef AppName
 #define AppName L"remix-api-sandbox"
 #endif
+
+// An ordinal exported routine to export devices to participating DLL's
+EXTERN_C __declspec(dllexport) IDirect3DDevice9 *ExportDevice(IDirect3DDevice9 * device) {
+  return device;
+};
 
 //-----------------------------------------------------------------------------
 // Name: AppSetupD3DTransform()
@@ -85,7 +84,7 @@ HRESULT AppSetupD3DTransform(
 // Name: AppSetupD3D()
 // Desc: Initializes Direct3D
 //-----------------------------------------------------------------------------
-HRESULT AppSetupD3D(AppCtx *appCtx, HWND hWnd, bool force = false)
+HRESULT AppSetupD3D(AppCtx *appCtx, HWND hWnd, bool force)
 {
   auto *pD3D9Device = appCtx->GetD3D9Device();
 
@@ -169,8 +168,8 @@ HRESULT AppSetupD3D(AppCtx *appCtx, HWND hWnd, bool force = false)
 //-----------------------------------------------------------------------------
 HRESULT AppSetupRemix(
   AppCtx *appCtx,
-  PFN_remixapi_BridgeCallback beginSceneCallback = nullptr,
-  PFN_remixapi_BridgeCallback endSceneCallback   = nullptr
+  PFN_remixapi_BridgeCallback beginSceneCallback,
+  PFN_remixapi_BridgeCallback endSceneCallback
  ) {
   //// Setup callbacks
   remixapi_ErrorCode r;
@@ -195,7 +194,8 @@ HRESULT AppSetupRemix(
   remix->app.sphereLight = {
     .sType            = REMIXAPI_STRUCT_TYPE_LIGHT_INFO_SPHERE_EXT,
     .pNext            = NULL,
-    .position         = {-80 , 7 , 0},
+    // .position      = {-80 , 7 , 0},
+    .position         = {0 , 0 , 0},
     .radius           = 0.3f,
     .shaping_hasvalue = FALSE,
     .shaping_value    = { 0 },
@@ -273,18 +273,20 @@ HRESULT AppSetupRemix(
 // Desc: Called for every invocation of IDirect3DDevice9->BeginScene()
 //-----------------------------------------------------------------------------
 VOID __cdecl AppBeginSceneCallback() {
-  static const D3DXVECTOR3 posVec = { 0.0f, 0.0f, 0.0f };
-  static const D3DXVECTOR3 axiVec = { 0.0f, 1.0f, 0.0f };
+  static D3DXVECTOR3 posVec = { 0.0f, 0.0f, 0.0f };
+  static D3DXVECTOR3 axiVec = { 0.0f, 1.0f, 0.0f };
   static auto remix     = GetAppCtx()->GetRemix();
-  D3DXVECTOR3 cameraVec = GetAppCtx()->GetCameraVec();
+  D3DXVECTOR3 camVec    = GetAppCtx()->GetCameraVec();
   D3DXMATRIX  view      = GetAppCtx()->GetCurrentViewMatrix();
 
 //// Camera Animation Demo
 #if 1
   // Update view transform for new cameraVec
-  cameraVec.z += 0.01;
-  cameraVec.y -= 0.01;
-  D3DXMatrixLookAtRH(&view, &cameraVec, &posVec, &axiVec);
+  posVec.x += 0.1f;
+  camVec.z += 0.1f;
+  camVec.y += 0.2f;
+  camVec.x -= 0.2f;
+  D3DXMatrixLookAtRH(&view, &camVec, &posVec, &axiVec);
 
   // Copy updated transform matrix into remix cameraInfo and send
   memcpy(remix->app.cameraInfo.view, view.m, sizeof(view.m));
@@ -292,7 +294,7 @@ VOID __cdecl AppBeginSceneCallback() {
 
   // Update context with new transform data
   GetAppCtx()->SetCurrentViewMatrix(view);
-  GetAppCtx()->SetCameraVec(cameraVec);
+  GetAppCtx()->SetCameraVec(camVec);
 #endif
 }
 
@@ -304,33 +306,39 @@ VOID __cdecl AppEndSceneCallback() {
   static auto remix = GetAppCtx()->GetRemix();
   static const auto meshloader = GetAppCtx()->GetMeshLoader();
 
-  //// Strobe ligting demo
 
   // Remix API doesn't allow updates
   // So we stupidly recreate it for each frame because why not ...
   remix->DestroyLight(remix->app.sceneLight);
  
-  if (!remix->app.sphereLightDirection) {
-    if (remix->app.sphereLight.position.x > -50.0f) {
-      remix->app.sphereLight.position.x -= 0.1f;
-      remix->app.lightInfo.radiance.y += 0.3f;
-      remix->app.lightInfo.radiance.x = 0;
-    } else {
-      remix->app.lightInfo.radiance.y = 0;
-      remix->app.lightInfo.radiance.x = 0;
-      remix->app.sphereLightDirection = 1;
-    }
-  } else {
-    if (remix->app.sphereLight.position.x < 50.0f) {
-      remix->app.sphereLight.position.x += 0.1f;
-      remix->app.lightInfo.radiance.x += 0.3f;
-      remix->app.lightInfo.radiance.y = 0;
-    } else {
-      remix->app.lightInfo.radiance.y = 0;
-      remix->app.lightInfo.radiance.x = 0;
-      remix->app.sphereLightDirection = 0;
-    }
-  }
+  //// Strobe ligting demo
+  //if (!remix->app.sphereLightDirection) {
+  //  if (remix->app.sphereLight.position.x > -50.0f) {
+  //    remix->app.sphereLight.position.x -= 0.1f;
+  //    remix->app.lightInfo.radiance.y += 0.05f;
+  //    remix->app.lightInfo.radiance.x = 0;
+  //  } else {
+  //    remix->app.lightInfo.radiance.y = 0;
+  //    remix->app.lightInfo.radiance.x = 0;
+  //    remix->app.sphereLightDirection = 1;
+  //  }
+  //} else {
+  //  if (remix->app.sphereLight.position.x < 50.0f) {
+  //    remix->app.sphereLight.position.x += 0.1f;
+  //    remix->app.lightInfo.radiance.x += 0.05f;
+  //    remix->app.lightInfo.radiance.y = 0;
+  //  } else {
+  //    remix->app.lightInfo.radiance.y = 0;
+  //    remix->app.lightInfo.radiance.x = 0;
+  //    remix->app.sphereLightDirection = 0;
+  //  }
+  //}
+  remix->app.sphereLight.position.x = 0.0f;
+  remix->app.sphereLight.position.y = 0.0f;
+  remix->app.sphereLight.position.z = 0.0f;
+  remix->app.lightInfo.radiance.x = 0.0f;
+  remix->app.lightInfo.radiance.y = 300.0f;
+  remix->app.lightInfo.radiance.z = 200.0f;
 
   // Draw OBJ mesh instances
   if (meshloader) [[likely]]
@@ -357,7 +365,7 @@ VOID AppRender(IDirect3DDevice9 *pD3D9Device) {
 // Name: AppInit()
 // Desc: Initializes firt-time context and sets init state, plus extras
 //-----------------------------------------------------------------------------
-AppCtx *AppInit(bool console = true) {
+AppCtx *AppInit(const wchar_t *appname, bool console) {
   AppCtx *appCtx = GetAppCtx();
   appCtx->SetInited(true);
   
@@ -366,7 +374,7 @@ AppCtx *AppInit(bool console = true) {
     (void) freopen_s(&f, "CONIN$",  "r", stdin);
     (void) freopen_s(&f, "CONOUT$", "w", stdout);
     (void) freopen_s(&f, "CONOUT$", "w", stderr);
-    SetConsoleTitleW(AppName);
+    SetConsoleTitleW(appname);
   }
 
   return appCtx;
@@ -383,13 +391,9 @@ INT AppMain(
   _In_     LPWSTR lpCmdLine,
   _In_     int nShowCmd
 ) {
-  UNREFERENCED_PARAMETER(hInstance);
-  UNREFERENCED_PARAMETER(hPrevInstance);
-  UNREFERENCED_PARAMETER(lpCmdLine);
-  UNREFERENCED_PARAMETER(nShowCmd);
-  
+
   HRESULT hr = 0;
-  AppCtx *appCtx = AppInit();
+  AppCtx *appCtx = AppInit(AppName, false);
 
   //// Create Window
   HWND appWindow = NULL;
@@ -435,6 +439,10 @@ INT AppMain(
       );
     }
   }
+  
+  // Export device to any participating DLL's
+  // (no-op) if no participating DLL's
+  pD3D9Device = ExportDevice(pD3D9Device);
 
   //// Enter the message loop
   MSG msg;
