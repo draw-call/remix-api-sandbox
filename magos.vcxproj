@@ -380,7 +380,6 @@
     <ClInclude Include="include\dxerror.hpp" />
     <ClInclude Include="include\dxvkcom.h" />
     <ClInclude Include="include\meshloader.hpp" />
-    <ClInclude Include="include\MinHook.h" />
     <ClInclude Include="include\skel\cdc.hpp" />
     <ClInclude Include="include\skel\cdc_internal.hpp" />
     <ClInclude Include="include\skel\d3d9ex.hpp" />
@@ -405,7 +404,7 @@
     <ClInclude Include="kanan\kanan.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="dadadadadadadadadadadada.gitignore" />
+    <None Include=".gitignore" />
     <None Include="bridge-remix\src\client\d3d9_lss.def" />
     <None Include="bridge-remix\src\client\meson.build" />
     <None Include="bridge-remix\src\client\version.rc.in" />

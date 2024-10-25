@@ -662,9 +662,6 @@
     <ClInclude Include="kanan\extension\static_for.hpp">
       <Filter>External Source Files\kanan\extension</Filter>
     </ClInclude>
-    <ClInclude Include="include\MinHook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\app.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -856,7 +853,7 @@
     <None Include="bridge-remix\src\util\meson.build">
       <Filter>External Source Files\bridge-remix\util</Filter>
     </None>
-    <None Include="dadadadadadadadadadadada.gitignore">
+    <None Include=".gitignore">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Detours\src\Makefile">
