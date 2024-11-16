@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
@@ -16,26 +12,8 @@
     <Filter Include="Source Files\skel">
       <UniqueIdentifier>{7b8bd917-b321-4f22-99cd-d1a451d221ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Detours">
-      <UniqueIdentifier>{9bcb9095-cdef-48e5-a5fe-f0e310748185}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\remix">
-      <UniqueIdentifier>{4b676dbb-2c12-462e-928c-1dd7c5862ba8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\remixapi">
-      <UniqueIdentifier>{7304a260-953c-4f20-9181-7a59b7d815f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="External Source Files">
       <UniqueIdentifier>{26e4bec6-1a4d-49bd-9581-1f143fbf3ccb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="External Source Files\kanan">
-      <UniqueIdentifier>{7a615b6e-7f89-44ec-9b6e-5e72553597dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="External Source Files\kanan\core">
-      <UniqueIdentifier>{87be7764-974b-4204-ba57-bf8c8f01c866}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="External Source Files\kanan\extension">
-      <UniqueIdentifier>{e75ff2a6-d060-429d-9768-8e984299123a}</UniqueIdentifier>
     </Filter>
     <Filter Include="External Source Files\Detours">
       <UniqueIdentifier>{1a20ef43-6d60-4e09-87a1-5bcc19e8d587}</UniqueIdentifier>
@@ -58,17 +36,66 @@
     <Filter Include="External Source Files\bridge-remix\util\log">
       <UniqueIdentifier>{dc7596e2-0d68-4084-86c0-3daa0ef61791}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Source Files\imgui">
+      <UniqueIdentifier>{9215a965-8bdb-4b18-b7f7-79615feabad3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\imgui\backends">
+      <UniqueIdentifier>{56769e22-275e-4e04-bc12-d3c850abbba4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="External Source Files\dxvk-remix">
       <UniqueIdentifier>{052c2cc0-6607-4248-bc69-ca7f8113f0e5}</UniqueIdentifier>
     </Filter>
     <Filter Include="External Source Files\dxvk-remix\d3d9">
       <UniqueIdentifier>{5ab35566-3c92-44d7-8d59-850894aabddb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\skel">
+    <Filter Include="External Source Files\dxvk-remix\rtx_render">
+      <UniqueIdentifier>{33d0cede-29b3-431c-93ca-51c40580a4c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Public Header Files\Detours">
+      <UniqueIdentifier>{9bcb9095-cdef-48e5-a5fe-f0e310748185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\remix">
+      <UniqueIdentifier>{4b676dbb-2c12-462e-928c-1dd7c5862ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\remixapi">
+      <UniqueIdentifier>{7304a260-953c-4f20-9181-7a59b7d815f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\skel">
       <UniqueIdentifier>{9c9453c8-c036-4d37-b3c9-053df093d3d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\skel\game">
+    <Filter Include="Public Header Files\skel\game">
       <UniqueIdentifier>{313aa833-e0ef-40cd-ab77-33c6263c6b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\imgui">
+      <UniqueIdentifier>{567a8003-799c-47b1-8548-346955e44199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\imgui\backends">
+      <UniqueIdentifier>{2a0e523c-2095-47fc-8957-c4f825c3d933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\kanan">
+      <UniqueIdentifier>{7a615b6e-7f89-44ec-9b6e-5e72553597dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\kanan\core">
+      <UniqueIdentifier>{87be7764-974b-4204-ba57-bf8c8f01c866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\kanan\extension">
+      <UniqueIdentifier>{e75ff2a6-d060-429d-9768-8e984299123a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\kanan">
+      <UniqueIdentifier>{c5b0cecd-5a31-498b-807d-e0999e4403cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source Files\kanan\core">
+      <UniqueIdentifier>{90ed6c96-72f5-4a18-87e0-ac88923eb367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\skel\engine">
+      <UniqueIdentifier>{bc4f7cb1-d887-4936-a845-c73c31739541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Header Files\skel\api">
+      <UniqueIdentifier>{f8cb42dd-e420-4703-a483-2761733e85d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -213,27 +240,6 @@
     <ClCompile Include="src\scraps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="kanan\core\Memory.cpp">
-      <Filter>External Source Files\kanan\core</Filter>
-    </ClCompile>
-    <ClCompile Include="kanan\core\Module.cpp">
-      <Filter>External Source Files\kanan\core</Filter>
-    </ClCompile>
-    <ClCompile Include="kanan\core\Patch.cpp">
-      <Filter>External Source Files\kanan\core</Filter>
-    </ClCompile>
-    <ClCompile Include="kanan\core\Pattern.cpp">
-      <Filter>External Source Files\kanan\core</Filter>
-    </ClCompile>
-    <ClCompile Include="kanan\core\Scan.cpp">
-      <Filter>External Source Files\kanan\core</Filter>
-    </ClCompile>
-    <ClCompile Include="kanan\core\String.cpp">
-      <Filter>External Source Files\kanan\core</Filter>
-    </ClCompile>
-    <ClCompile Include="kanan\core\Utility.cpp">
-      <Filter>External Source Files\kanan\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\injector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -375,13 +381,271 @@
     <ClCompile Include="dxvk-remix\src\d3d9\d3d9_volume.cpp">
       <Filter>External Source Files\dxvk-remix\d3d9</Filter>
     </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_accel_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_asset_data_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_asset_exporter.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_asset_replacer.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_auto_exposure.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_bindless_resource_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_bloom.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_camera.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_camera_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_composite.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_context.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_debug_view.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_demodulate.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_denoise.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_dlfg.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_dlss.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_draw_call_cache.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_env.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_game_capturer.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_geometry_utils.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_hash_collision_detection.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_hashing.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_image_utils.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_imgui.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_initializer.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_instance_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_io.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_light_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_light_manager_gui.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_light_utils.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_lights.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_lights_data.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_local_tone_mapping.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_materials.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_mipmap.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_mod_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_mod_usd.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_nee_cache.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_ngx_wrapper.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_nis.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_nrd_context.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_nrd_settings.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_objectpicking.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_opacity_micromap_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_option.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_options.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_pathtracer_gbuffer.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_pathtracer_integrate_direct.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_pathtracer_integrate_indirect.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_postFx.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_ray_portal_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_ray_reconstruction.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_reflex.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_remix_api.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_resources.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_restir_gi_rayquery.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_rtxdi_rayquery.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_scene_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_semaphore.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_shader_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_staging.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_taa.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_terrain_baker.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_texture.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_texture_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_tone_mapping.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_types.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_volume_filter.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_volume_integrate.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_volume_manager.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="dxvk-remix\src\dxvk\rtx_render\rtx_volume_preintegrate.cpp">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>External Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>External Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>External Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>External Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>External Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\backends\imgui_impl_dx9.cpp">
+      <Filter>External Source Files\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\backends\imgui_impl_win32.cpp">
+      <Filter>External Source Files\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Memory.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Module.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Patch.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Pattern.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Scan.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\String.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="kanan\core\Utility.cpp">
+      <Filter>External Source Files\kanan\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\skel\menu.cpp">
+      <Filter>Source Files\skel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\dxvkcom.h">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\meshloader.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\src\client\base.h">
       <Filter>External Source Files\bridge-remix\client</Filter>
@@ -603,94 +867,88 @@
       <Filter>External Source Files\bridge-remix\util\log</Filter>
     </ClInclude>
     <ClInclude Include="include\cgarray.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\dxerror.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\statecb.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\state.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\device.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\timer.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\window.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\app_remix.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="kanan\kanan.h">
-      <Filter>External Source Files\kanan</Filter>
+      <Filter>Public Header Files\kanan</Filter>
     </ClInclude>
     <ClInclude Include="kanan\core\Memory.hpp">
-      <Filter>External Source Files\kanan\core</Filter>
+      <Filter>Public Header Files\kanan\core</Filter>
     </ClInclude>
     <ClInclude Include="kanan\core\Module.hpp">
-      <Filter>External Source Files\kanan\core</Filter>
+      <Filter>Public Header Files\kanan\core</Filter>
     </ClInclude>
     <ClInclude Include="kanan\core\Patch.hpp">
-      <Filter>External Source Files\kanan\core</Filter>
+      <Filter>Public Header Files\kanan\core</Filter>
     </ClInclude>
     <ClInclude Include="kanan\core\Pattern.hpp">
-      <Filter>External Source Files\kanan\core</Filter>
+      <Filter>Public Header Files\kanan\core</Filter>
     </ClInclude>
     <ClInclude Include="kanan\core\Scan.hpp">
-      <Filter>External Source Files\kanan\core</Filter>
+      <Filter>Public Header Files\kanan\core</Filter>
     </ClInclude>
     <ClInclude Include="kanan\core\String.hpp">
-      <Filter>External Source Files\kanan\core</Filter>
+      <Filter>Public Header Files\kanan\core</Filter>
     </ClInclude>
     <ClInclude Include="kanan\core\Utility.hpp">
-      <Filter>External Source Files\kanan\core</Filter>
+      <Filter>Public Header Files\kanan\core</Filter>
     </ClInclude>
     <ClInclude Include="kanan\extension\constaes.hpp">
-      <Filter>External Source Files\kanan\extension</Filter>
+      <Filter>Public Header Files\kanan\extension</Filter>
     </ClInclude>
     <ClInclude Include="kanan\extension\encryption.hpp">
-      <Filter>External Source Files\kanan\extension</Filter>
+      <Filter>Public Header Files\kanan\extension</Filter>
     </ClInclude>
     <ClInclude Include="kanan\extension\extension.hpp">
-      <Filter>External Source Files\kanan\extension</Filter>
+      <Filter>Public Header Files\kanan\extension</Filter>
     </ClInclude>
     <ClInclude Include="kanan\extension\static_for.hpp">
-      <Filter>External Source Files\kanan\extension</Filter>
+      <Filter>Public Header Files\kanan\extension</Filter>
     </ClInclude>
     <ClInclude Include="include\app.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Detours\src\detours.h">
-      <Filter>External Source Files\Detours</Filter>
-    </ClInclude>
-    <ClInclude Include="Detours\src\detver.h">
-      <Filter>External Source Files\Detours</Filter>
+      <Filter>Public Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Detours\include\detours.h">
-      <Filter>Header Files\Detours</Filter>
+      <Filter>Public Header Files\Detours</Filter>
     </ClInclude>
     <ClInclude Include="Detours\include\detver.h">
-      <Filter>Header Files\Detours</Filter>
+      <Filter>Public Header Files\Detours</Filter>
     </ClInclude>
     <ClInclude Include="Detours\include\syelog.h">
-      <Filter>Header Files\Detours</Filter>
+      <Filter>Public Header Files\Detours</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\ext\remix\remix.h">
-      <Filter>Header Files\remix</Filter>
+      <Filter>Public Header Files\remix</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\ext\remix\remix_c.h">
-      <Filter>Header Files\remix</Filter>
+      <Filter>Public Header Files\remix</Filter>
     </ClInclude>
     <ClInclude Include="bridge-remix\public\include\remixapi\bridge_remix_api.h">
-      <Filter>Header Files\remixapi</Filter>
+      <Filter>Public Header Files\remixapi</Filter>
     </ClInclude>
     <ClInclude Include="kanan\core\HMacros.hpp">
-      <Filter>External Source Files\kanan\core</Filter>
+      <Filter>Public Header Files\kanan\core</Filter>
     </ClInclude>
     <ClInclude Include="dxvk-remix\src\d3d9\d3d9_adapter.h">
       <Filter>External Source Files\dxvk-remix\d3d9</Filter>
@@ -812,20 +1070,305 @@
     <ClInclude Include="dxvk-remix\src\d3d9\d3d9_volume.h">
       <Filter>External Source Files\dxvk-remix\d3d9</Filter>
     </ClInclude>
-    <ClInclude Include="include\skel\cdc_internal.hpp">
-      <Filter>Header Files\skel</Filter>
-    </ClInclude>
-    <ClInclude Include="include\skel\d3d9ex.hpp">
-      <Filter>Header Files\skel</Filter>
-    </ClInclude>
     <ClInclude Include="include\skel\game\base.hpp">
-      <Filter>Header Files\skel\game</Filter>
+      <Filter>Public Header Files\skel\game</Filter>
     </ClInclude>
     <ClInclude Include="include\skel\game\trl.hpp">
-      <Filter>Header Files\skel\game</Filter>
+      <Filter>Public Header Files\skel\game</Filter>
     </ClInclude>
-    <ClInclude Include="include\skel\cdc.hpp">
-      <Filter>Header Files\skel</Filter>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_accel_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_asset_data.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_asset_data_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_asset_exporter.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_asset_package.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_asset_replacer.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_auto_exposure.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_bindless_resource_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_bloom.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_bridge_message_channel.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_camera.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_camera_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_common_object.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_composite.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_constants.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_context.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_debug_view.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_demodulate.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_denoise.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_denoise_type.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_dlfg.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_dlss.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_draw_call_cache.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_env.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_game_capturer.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_game_capturer_paths.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_game_capturer_utils.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_geometry_utils.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_globals.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_hash_collision_detection.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_hashing.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_image_utils.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_imgui.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_initializer.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_instance_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_intersection_test.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_intersection_test_helpers.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_io.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_light_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_light_utils.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_lights.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_lights_data.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_local_tone_mapping.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_material_data.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_materials.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_matrix_helpers.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_mipmap.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_mod_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_mod_usd.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_nee_cache.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_ngx_wrapper.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_nis.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_nrd_context.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_nrd_settings.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_objectpicking.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_opacity_micromap_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_option.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_options.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_pathtracer_gbuffer.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_pathtracer_integrate_direct.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_pathtracer_integrate_indirect.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_postFx.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_ray_portal_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_ray_reconstruction.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_reflex.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_remix_pnext.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_replacement_material_texture_type.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_resources.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_restir_gi_rayquery.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_rtxdi_rayquery.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_scene_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_semaphore.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_shader_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_sky.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_sparse_unique_cache.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_staging.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_taa.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_terrain_baker.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_texture.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_texture_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_tone_mapping.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_types.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_utils.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_volume_filter.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_volume_integrate.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_volume_manager.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="dxvk-remix\src\dxvk\rtx_render\rtx_volume_preintegrate.h">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>Public Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>Public Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\backends\imgui_impl_dx9.h">
+      <Filter>Public Header Files\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\backends\imgui_impl_win32.h">
+      <Filter>Public Header Files\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\menu.hpp">
+      <Filter>Public Header Files\skel</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\game\constants.hpp">
+      <Filter>Public Header Files\skel\game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\engine\cdc_internal.hpp">
+      <Filter>Public Header Files\skel\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\detoursafe.hpp">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\api\d3d9ex.hpp">
+      <Filter>Public Header Files\skel\api</Filter>
+    </ClInclude>
+    <ClInclude Include="include\skel\game\game.hpp">
+      <Filter>Public Header Files\skel\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -856,9 +1399,6 @@
     <None Include=".gitignore">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Detours\src\Makefile">
-      <Filter>External Source Files\Detours</Filter>
-    </None>
     <None Include="dxvk-remix\src\d3d9\d3d9.def">
       <Filter>External Source Files\dxvk-remix\d3d9</Filter>
     </None>
@@ -867,6 +1407,12 @@
     </None>
     <None Include="dxvk-remix\src\d3d9\version.rc.in">
       <Filter>External Source Files\dxvk-remix\d3d9</Filter>
+    </None>
+    <None Include="dxvk-remix\src\dxvk\rtx_render\rtx_remix_specialization.inl">
+      <Filter>External Source Files\dxvk-remix\rtx_render</Filter>
+    </None>
+    <None Include="C:\Windows\System32\cmd.exe">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

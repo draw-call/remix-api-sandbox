@@ -6,24 +6,37 @@ THISDIR   = $(MAKEDIR)
 SHELLTYPE = CMD
 MAKETYPE  = nmake
 
-REMIX_BUILD_TYPE    = release
-REMIX_API_MODE      = bridge
-REMIX_SDK_TARGET    = "_Comp_$(REMIX_BUILD_TYPE)_SDK"
-REMIX_DXVK_ROOT     = $(CURDIR)\dxvk-remix
-REMIX_DXVK_COMMIT   = main
-REMIX_BRIDGE_ROOT   = $(CURDIR)\bridge-remix
-REMIX_BRIDGE_COMMIT = main
+TARGET_GAME = TRL
 
+# Core Directories
 LOCAL_SOURCE_DIR    = $(CURDIR)\src
 LOCAL_INCLUDE_DIR   = $(CURDIR)\include
 LOCAL_GAME_DIR      = $(CURDIR)\game
+LOCAL_SCRIPT_DIR    = $(CURDIR)\script
 LOCAL_LIB_DIR       = $(CURDIR)\lib
+
+# RTX Options and Directories
+REMIX_BUILD_TYPE    = release
+REMIX_API_MODE      = bridge
+REMIX_SDK_TARGET    = "_Comp_$(REMIX_BUILD_TYPE)_SDK"
+
+REMIX_DXVK_ROOT     = $(CURDIR)\dxvk-remix
+REMIX_DXVK_COMMIT   = main
+
+REMIX_BRIDGE_ROOT   = $(CURDIR)\bridge-remix
+REMIX_BRIDGE_COMMIT = main
+
+# Third Party
+LOCAL_IMGUI_DIR     = $(CURDIR)\imgui
+LOCAL_DETOUR_DIR    = $(CURDIR)\Detours
 LOCAL_KANAN_DIR     = $(CURDIR)\kanan
 
-LOCAL_KANAN_LIB     = $(LOCAL_LIB_DIR)\libkanan.lib
-LOCAL_MINHOOK_LIB   = $(LOCAL_LIB_DIR)\libMinHook-x86-v141-mt.lib
+# Local Libraries
+# NOTE: MINHOOK not used right now
+LOCAL_KANAN_LIB     = $(LOCAL_LIB_DIR)\kanan.lib
+#LOCAL_MINHOOK_LIB  = $(LOCAL_LIB_DIR)\libMinHook-x86-v141-mt.lib
 LOCAL_DETOURS_LIB   = $(LOCAL_LIB_DIR)\detours.lib
-#NOTE: MINHOOK not used right now
+LOCAL_IMGUI_LIB     = $(LOCAL_LIB_DIR)\imgui_win32_d3d9.lib
 
 !IF "$(DXSDK_DIR)" == ""
 !ERROR DXSDK_DIR not defined
@@ -32,9 +45,12 @@ LOCAL_DETOURS_LIB   = $(LOCAL_LIB_DIR)\detours.lib
 ##
 # Compiler Flags
 ##
+DFLAGS = /D$(TARGET_GAME)
 CFLAGS = -I "$(LOCAL_INCLUDE_DIR)" \
          -I "$(LOCAL_INCLUDE_DIR)\detours" \
          -I "$(LOCAL_KANAN_DIR)"   \
+         -I "$(LOCAL_IMGUI_DIR)"   \
+         -I "$(LOCAL_IMGUI_DIR)\backends" \
          -I "$(DXSDK_DIR)\include" \
          /Zi
 CPPFLAGS = $(CFLAGS) /EHsc /std:c++20
@@ -61,14 +77,16 @@ APP_OBJ_TARGETS = \
 DLL_OBJ_TARGETS = \
   $(LOCAL_SOURCE_DIR)\dll.obj \
   $(LOCAL_SOURCE_DIR)\dxerror.obj \
+  $(LOCAL_SOURCE_DIR)\skel\menu.obj \
   $(LOCAL_SOURCE_DIR)\skel\d3d9ex.obj \
   $(LOCAL_KANAN_LIB) \
+  $(LOCAL_IMGUI_LIB) \
   $(LOCAL_DETOURS_LIB)
 
 ##
-# libkanan.lib sources
+# kanan.lib sources
 ##
-LIBKANAN_OBJ_TARGETS = \
+KANAN_OBJ_TARGETS = \
   $(LOCAL_KANAN_DIR)\core\Memory.obj \
   $(LOCAL_KANAN_DIR)\core\Module.obj \
   $(LOCAL_KANAN_DIR)\core\Patch.obj \
@@ -76,6 +94,17 @@ LIBKANAN_OBJ_TARGETS = \
   $(LOCAL_KANAN_DIR)\core\Scan.obj \
   $(LOCAL_KANAN_DIR)\core\String.obj \
   $(LOCAL_KANAN_DIR)\core\Utility.obj
+
+##
+# imgui.lib sources
+##
+IMGUI_OBJ_TARGETS = \
+  $(LOCAL_IMGUI_DIR)\backends\imgui_impl_dx9.obj \
+  $(LOCAL_IMGUI_DIR)\backends\imgui_impl_win32.obj \
+  $(LOCAL_IMGUI_DIR)\imgui.obj \
+  $(LOCAL_IMGUI_DIR)\imgui_draw.obj \
+  $(LOCAL_IMGUI_DIR)\imgui_tables.obj \
+  $(LOCAL_IMGUI_DIR)\imgui_widgets.obj
 
 ##
 # Injector sources
@@ -93,7 +122,8 @@ help:
   -@ ECHO   nmake build-remix        [options]
   -@ ECHO   nmake build-dxvk-remix   [options]
   -@ ECHO   nmake build-bridge-remix [options]
-  -@ ECHO   nmake libkanan
+  -@ ECHO   nmake kanan
+  -@ ECHO   nmake imgui
   -@ ECHO   nmake app
   -@ ECHO   nmake dll
   -@ ECHO   nmake clean
@@ -171,20 +201,26 @@ build-remix: \
   build-dxvk-remix \
   build-bridge-remix
 
-
 ##
-# libkanan.lib
+# kanan.lib
 ##
-libkanan: $(LOCAL_LIB_DIR)\libkanan.lib
-$(LOCAL_LIB_DIR)\libkanan.lib: $(LIBKANAN_OBJ_TARGETS)
+kanan: $(LOCAL_KANAN_LIB)
+$(LOCAL_KANAN_LIB): $(KANAN_OBJ_TARGETS)
   lib /nologo /out:$@ $**
 
+
+##
+# imgui.lib
+##
+imgui: $(LOCAL_IMGUI_LIB)
+$(LOCAL_IMGUI_LIB): $(IMGUI_OBJ_TARGETS)
+  lib /nologo /out:$@ $**
 
 ##
 # Object pattern Rule
 ##
 .cpp.obj:
-  -@ $(CPP) /nologo $(CPPFLAGS) /c /Fo:$@ $*.cpp
+  -@ $(CPP) /nologo $(CPPFLAGS) $(DFLAGS) /c /Fo:$@ $*.cpp
 
 
 ##
@@ -213,7 +249,7 @@ $(LOCAL_GAME_DIR)\magos.injector.exe: $(INJECTOR_OBJ_TARGETS)
   -@ $(CPP) /nologo $(CPPFLAGS) \
     /Fd:$(LOCAL_GAME_DIR)\magos.injector.pdb \
     /o $@ \
-    $** $(LFLAGS) Advapi32.lib
+    $** $(LFLAGS)
 
 ##
 # Util
@@ -233,8 +269,10 @@ clean:
   DEL $(LOCAL_GAME_DIR)\*.log
   DEL $(LOCAL_GAME_DIR)\*.dxvk-cache
   DEL $(LOCAL_GAME_DIR)\metrics.txt
-  DEL $(LOCAL_LIB_DIR)\libkanan.lib
+  DEL $(LOCAL_GAME_DIR)\console.txt
   DEL $(LOCAL_KANAN_DIR)\core\*.obj
+  DEL $(LOCAL_KANAN_LIB)
+  DEL $(LOCAL_IMGUI_LIB)
 
 .PHONY: \
   build-remix \
@@ -243,6 +281,6 @@ clean:
   magos.app app \
   magos.dll dll \
   magos.injector injector \
-  libkanan \
-  clean$(LOCAL_SOURCE_DIR)\injector.obj
-
+  kanan \
+  imgui \
+  clean

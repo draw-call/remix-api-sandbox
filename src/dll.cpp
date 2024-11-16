@@ -1,3 +1,6 @@
+// Direct3DCreate9 Wrapper
+// watbulb
+
 #include <iostream>
 
 #include <Windows.h>
@@ -7,9 +10,10 @@
 #include <d3dx9.h>
 
 #include "detours.h"
-
 #include "kanan.h"
-#include "skel/d3d9ex.hpp"
+
+#include "detoursafe.hpp"
+#include "skel/api/d3d9ex.hpp"
 
 #ifndef DllName
 #define DllName "magos.dll"
@@ -28,7 +32,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 EXTERN_C __declspec(dllexport) VOID NullExport(VOID) { };
 
 // Note: only used when running in ExportDevice mode (companion app)
-static skel::d3d9ex::D3D9Device * gD3D9Device = NULL;
+static skel::d3d9ex::D3D9Device *gD3D9Device = NULL;
 
 // Direct3DCreate9 Wrapper Hook
 HOOK_STDCALL(IDirect3D9 *, LocalDirect3DCreate9, HARGS(UINT SDKVersion)) {
@@ -61,27 +65,26 @@ DWORD APIENTRY StartupThread([[maybe_unused]] LPVOID lpParam) noexcept
 
   // Detours
   {
-    DetourTransactionBegin();
-    DetourUpdateThread(GetCurrentThread());
-
-    o_ExportDevice = (t_ExportDevice)(GetProcAddress(GetModuleHandleA(CompanionName), CompanionExportDeviceStr));
+    // ExportDevice
+    o_ExportDevice =
+      reinterpret_cast<t_ExportDevice>(GetProcAddress(GetModuleHandleA(CompanionName), CompanionExportDeviceStr));
     if (o_ExportDevice) {
-      DetourAttach((PVOID *)&o_ExportDevice, ExportDevice);
+      DetourAttachSafe(o_ExportDevice, ExportDevice);
     }
     
+    // Direct3DCreate9
     o_LocalDirect3DCreate9 = &Direct3DCreate9;
-    DetourAttach((PVOID *)&o_LocalDirect3DCreate9, LocalDirect3DCreate9);
-    
-    if (DetourTransactionCommit() != NO_ERROR) {
+    if (DetourAttachSafe(o_LocalDirect3DCreate9, LocalDirect3DCreate9) != NO_ERROR) {
       std::cout << "[MAGOS] ERROR: Detour" << std::endl;
       std::fflush(stdout);
       goto exit;
     }
   }
- 
+
+  // Loop()
   MSG msg;
   ZeroMemory(&msg, sizeof(msg));
-  while(msg.message != WM_QUIT) {
+  while (msg.message != WM_QUIT) {
     if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE)) {
       TranslateMessage(&msg);
       DispatchMessage(&msg);
@@ -89,6 +92,22 @@ DWORD APIENTRY StartupThread([[maybe_unused]] LPVOID lpParam) noexcept
   }
 
 exit:
+  // Un-Detour
+  {
+    if (o_ExportDevice) {
+      if (DetourDetachSafe(o_ExportDevice, ExportDevice) != NO_ERROR) {
+        std::cout << "[MAGOS] ERROR: Exit Detour (ExportDevice)" << std::endl;
+        std::fflush(stdout);
+        goto exit;
+      }
+    }
+    if (DetourDetachSafe(o_LocalDirect3DCreate9, LocalDirect3DCreate9) != NO_ERROR) {
+      std::cout << "[MAGOS] ERROR: Exit Detour (Direct3DCreate9)" << std::endl;
+      std::fflush(stdout);
+      goto exit;
+    }
+  }
+
   std::cout << "[MAGOS] Bye! :waves:" << std::endl;
   std::fflush(stdout);
 
@@ -110,14 +129,7 @@ BOOL APIENTRY DllMain (HMODULE dllHandle, DWORD reason, LPVOID reserved)
       CreateThread(0, 0, StartupThread, 0, 0, 0);
       break;
     case DLL_PROCESS_DETACH:
-      DetourTransactionBegin();
-      DetourUpdateThread(GetCurrentThread());
-      DetourDetach((PVOID *)&o_LocalDirect3DCreate9, LocalDirect3DCreate9);
-      if (o_ExportDevice) {
-        DetourDetach((PVOID *)&o_ExportDevice, ExportDevice);
-      }
-      DetourTransactionCommit();
       break;
   }
   return TRUE;
-}
+}    

@@ -1,5 +1,5 @@
-#include <cstdarg>
-
+#include <memory>
+#include <string>
 #include <Windows.h>
 
 #include "String.hpp"
@@ -13,7 +13,6 @@ string narrow(wstring_view str) {
 
     narrowStr.resize(length);
     WideCharToMultiByte(CP_UTF8, 0, str.data(), (int)str.length(), (LPSTR)narrowStr.c_str(), length, nullptr, nullptr);
-
     return narrowStr;
 }
 
@@ -23,60 +22,15 @@ wstring widen(string_view str) {
 
     wideStr.resize(length);
     MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.length(), (LPWSTR)wideStr.c_str(), length);
-
     return wideStr;
 }
 
-string formatString(const char* format, va_list args) {
-    va_list argsCopy{};
+vector<string> split(string str, const string& delim) {
+    vector<string> pieces{};
+    size_t last{};
+    size_t next{};
 
-    va_copy(argsCopy, args);
-
-    uint64_t len = vsnprintf(nullptr, 0, format, argsCopy);
-
-    va_end(argsCopy);
-
-    if (len <= 0) {
-        return {};
-    }
-
-    string buffer{};
-
-    buffer.resize(len + 1, 0);
-    vsnprintf(buffer.data(), buffer.size(), format, args);
-    buffer.resize(buffer.size() - 1); // Removes the extra 0 vsnprintf adds.
-
-    return buffer;
-}
-
-string formatString(string format, va_list args) {
-    va_list argsCopy{};
-
-    va_copy(argsCopy, args);
-
-    uint64_t len = vsnprintf(nullptr, 0, format.c_str(), argsCopy);
-
-    va_end(argsCopy);
-
-    if (len <= 0) {
-        return {};
-    }
-
-    string buffer{};
-
-    buffer.resize(len + 1, 0);
-    vsnprintf(buffer.data(), buffer.size(), format.c_str(), args);
-    buffer.resize(buffer.size() - 1); // Removes the extra 0 vsnprintf adds.
-
-    return buffer;
-}
-
-std::vector<std::string> split(std::string str, const std::string& delim) {
-    std::vector<std::string> pieces{};
-    std::size_t last{};
-    std::size_t next{};
-
-    while ((next = str.find(delim, last)) != std::string::npos) {
+    while ((next = str.find(delim, last)) != string::npos) {
         pieces.emplace_back(str.substr(last, next - last));
         last = next + delim.length();
     }
